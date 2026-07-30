@@ -665,8 +665,101 @@ body.ftec-menu-open { overflow: hidden; }
 
 <style>
 /* 「見えない時間を、記録する。」導入画像 */
+.latest-note-feature__image,
+.latest-note-visual {
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
 #latest-note-feature-image {
+  display: block;
   object-position: center top;
+}
+
+/* 上下左右の四辺を白い背景へ自然に溶かす */
+.latest-note-feature__image::after,
+.latest-note-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      #fff 0%,
+      rgba(255,255,255,.90) 2%,
+      rgba(255,255,255,.48) 6%,
+      transparent 12%,
+      transparent 88%,
+      rgba(255,255,255,.48) 94%,
+      rgba(255,255,255,.90) 98%,
+      #fff 100%
+    ),
+    linear-gradient(
+      180deg,
+      #fff 0%,
+      rgba(255,255,255,.90) 2%,
+      rgba(255,255,255,.45) 6%,
+      transparent 12%,
+      transparent 88%,
+      rgba(255,255,255,.45) 94%,
+      rgba(255,255,255,.90) 98%,
+      #fff 100%
+    );
+}
+
+/* 既存の片側だけのグラデーションより、この四辺フェードを優先 */
+.latest-note-feature__image::after {
+  background:
+    linear-gradient(
+      90deg,
+      #fff 0%,
+      rgba(255,255,255,.90) 2%,
+      rgba(255,255,255,.48) 6%,
+      transparent 12%,
+      transparent 88%,
+      rgba(255,255,255,.48) 94%,
+      rgba(255,255,255,.90) 98%,
+      #fff 100%
+    ),
+    linear-gradient(
+      180deg,
+      #fff 0%,
+      rgba(255,255,255,.90) 2%,
+      rgba(255,255,255,.45) 6%,
+      transparent 12%,
+      transparent 88%,
+      rgba(255,255,255,.45) 94%,
+      rgba(255,255,255,.90) 98%,
+      #fff 100%
+    ) !important;
+}
+
+@media (max-width: 680px) {
+  .latest-note-feature__image::after,
+  .latest-note-visual::after {
+    background:
+      linear-gradient(
+        90deg,
+        #fff 0%,
+        rgba(255,255,255,.72) 4%,
+        transparent 12%,
+        transparent 88%,
+        rgba(255,255,255,.72) 96%,
+        #fff 100%
+      ),
+      linear-gradient(
+        180deg,
+        #fff 0%,
+        rgba(255,255,255,.72) 4%,
+        transparent 12%,
+        transparent 88%,
+        rgba(255,255,255,.72) 96%,
+        #fff 100%
+      ) !important;
+  }
 }
 </style>
 
