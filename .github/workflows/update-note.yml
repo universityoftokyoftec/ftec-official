@@ -15,7 +15,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
 
     steps:
       - name: Check out repository
@@ -26,16 +26,31 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Fetch note RSS and cache header images
+      - name: Fetch note posts and header images
         run: python scripts/update_note.py
+
+      - name: Show generated image status
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("assets/note-latest.json")
+          data = json.loads(p.read_text(encoding="utf-8"))
+          for item in data.get("posts", []):
+              print(item.get("title"))
+              print("  image:", item.get("image"))
+              print("  source:", item.get("source_image"))
+          PY
 
       - name: Commit updated data and images when changed
         shell: bash
         run: |
-          if git diff --quiet -- assets/note-latest.json assets/note-images; then
+          if [ -z "$(git status --porcelain -- assets/note-latest.json assets/note-images)" ]; then
             echo "No note update detected."
             exit 0
           fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/note-latest.json assets/note-images
