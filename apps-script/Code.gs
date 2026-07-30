@@ -11,6 +11,7 @@ const CONFIG = Object.freeze({
   destinationEmail: 'university.of.tokyo.ftec@gmail.com',
   senderName: '東京大学 F-tec 公式サイト',
   subjectPrefix: '[F-tec公式サイト]',
+  contactPageUrl: 'https://ftec-official.tomokiogawa.chatgpt.site/contact/',
   timeZone: 'Asia/Tokyo',
   autoReply: true,
   duplicateWindowSeconds: 120,
@@ -34,6 +35,7 @@ const ALLOWED_CATEGORIES = Object.freeze([
   '取材・メディア',
   '研究・技術連携',
   'OBOGの皆さま',
+  'グッズ購入',
   'その他',
 ]);
 
@@ -50,7 +52,7 @@ function doPost(e) {
   let returnUrl = '';
   try {
     const params = (e && e.parameter) || {};
-    returnUrl = safeReturnUrl_(params.sourcePage);
+    returnUrl = safeReturnUrl_(params.sourcePage) || CONFIG.contactPageUrl;
 
     // ハニーポットに入力がある場合は、ボットとみなしてメールを送信しません。
     // 成否の判定材料をボットへ与えないため、通常の完了画面を返します。
@@ -243,13 +245,13 @@ function sendAutoReply_(data, referenceId, receivedAt) {
 
 function renderPage_(title, message, detail, success, returnUrl) {
   const accent = success ? '#16a34a' : '#1d4ed8';
-  const safeUrl = safeReturnUrl_(returnUrl);
+  const safeUrl = safeReturnUrl_(returnUrl) || CONFIG.contactPageUrl;
   const returnButton = safeUrl
-    ? `<a href="${escapeHtml_(safeUrl)}" style="display:inline-block;margin-top:24px;padding:13px 24px;background:#0b1b40;color:#fff;text-decoration:none;border-radius:4px">お問い合わせページへ戻る</a>`
+    ? `<a href="${escapeHtml_(safeUrl)}" target="_top" rel="noopener" style="display:inline-block;margin-top:24px;padding:13px 24px;background:#0b1b40;color:#fff;text-decoration:none;border-radius:4px">お問い合わせページへ戻る</a>`
     : '<button type="button" onclick="history.back()" style="margin-top:24px;padding:13px 24px;background:#0b1b40;color:#fff;border:0;border-radius:4px;cursor:pointer">前のページへ戻る</button>';
 
   return HtmlService.createHtmlOutput(`<!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base target="_top">
 <title>${escapeHtml_(title)}</title></head>
 <body style="margin:0;background:#f3f5f8;color:#0b1b40;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans JP',sans-serif">
 <main style="min-height:100vh;display:grid;place-items:center;padding:24px;box-sizing:border-box">
