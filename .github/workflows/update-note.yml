@@ -15,7 +15,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
 
     steps:
       - name: Check out repository
@@ -26,18 +26,18 @@ jobs:
         with:
           python-version: '3.13'
 
-      - name: Fetch note RSS
+      - name: Fetch note RSS and cache header images
         run: python scripts/update_note.py
 
-      - name: Commit updated data when changed
+      - name: Commit updated data and images when changed
         shell: bash
         run: |
-          if git diff --quiet -- assets/note-latest.json; then
+          if git diff --quiet -- assets/note-latest.json assets/note-images; then
             echo "No note update detected."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/note-latest.json
-          git commit -m "Update latest note posts"
+          git add assets/note-latest.json assets/note-images
+          git commit -m "Update latest note posts and images"
           git push

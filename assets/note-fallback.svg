@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="670" viewBox="0 0 1280 670" role="img" aria-labelledby="title desc">
+  <title id="title">F-tec note</title>
+  <desc id="desc">noteの記事画像を取得できない場合に表示する代替画像</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#031136"/>
+      <stop offset="1" stop-color="#183d73"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="670" fill="url(#g)"/>
+  <path d="M0 510 C250 410 420 620 700 500 C930 400 1080 430 1280 330 L1280 670 L0 670 Z" fill="#42c9b8" opacity=".18"/>
+  <text x="80" y="112" fill="#42c9b8" font-family="Arial, Helvetica, sans-serif" font-size="25" letter-spacing="8">LATEST NOTE</text>
+  <text x="80" y="315" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="700">F-tec</text>
+  <text x="83" y="382" fill="#dbe6f6" font-family="Arial, Helvetica, sans-serif" font-size="31" letter-spacing="4">HUMAN POWERED AIRCRAFT TEAM</text>
+</svg>

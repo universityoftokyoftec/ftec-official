@@ -4,6 +4,7 @@
   const SECTION_SELECTOR = '#latest';
   const GRID_SELECTOR = '.note-post-grid';
   const DATA_URL = '../assets/note-latest.json';
+  const FALLBACK_IMAGE = '../assets/note-fallback.svg';
   const MAX_POSTS = 3;
 
   function createElement(tag, className, text) {
@@ -31,22 +32,19 @@
     if (index === 0) card.classList.add('note-post-card--feature');
     card.href = href;
     card.target = '_blank';
-    card.rel = 'noreferrer';
+    card.rel = 'noopener noreferrer';
 
     const imageBox = createElement('div', 'note-post-card__image');
-    const imageUrl = normalizeUrl(post.image);
-    if (imageUrl) {
-      const image = document.createElement('img');
-      image.src = imageUrl;
-      image.alt = `${post.title || 'note記事'}の見出し画像`;
-      image.loading = 'lazy';
-      image.decoding = 'async';
-      image.referrerPolicy = 'no-referrer';
-      imageBox.appendChild(image);
-    } else {
-      imageBox.setAttribute('aria-hidden', 'true');
-      imageBox.style.background = 'linear-gradient(135deg, #e8eef8, #b9c9e5)';
-    }
+    const image = document.createElement('img');
+    image.src = normalizeUrl(post.image) || normalizeUrl(FALLBACK_IMAGE);
+    image.alt = `${post.title || 'note記事'}の見出し画像`;
+    image.loading = index === 0 ? 'eager' : 'lazy';
+    image.decoding = 'async';
+    image.addEventListener('error', () => {
+      const fallback = normalizeUrl(FALLBACK_IMAGE);
+      if (fallback && image.src !== fallback) image.src = fallback;
+    }, { once: true });
+    imageBox.appendChild(image);
 
     const body = createElement('div', 'note-post-card__body');
     const meta = createElement('div', 'note-post-card__meta');
@@ -89,7 +87,7 @@
       grid.replaceChildren(fragment);
       section.dataset.noteUpdatedAt = data.updated_at || '';
     } catch (error) {
-      // RSS更新に失敗した場合は、HTMLに保存済みの既存カードをそのまま表示する。
+      // If JSON cannot be loaded, preserve the static cards already in HTML.
       console.warn('note最新記事の読み込みに失敗しました。既存表示を使用します。', error);
     }
   }
