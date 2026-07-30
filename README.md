@@ -41,3 +41,8 @@ ChatGPT Sitesで公開されていたF-tec公式サイトを、GitHub Pages／Ve
 - ChatGPT Sites固有の編集機能は含まれません。
 - 公開後は、各ページのHTMLを直接編集して更新します。
 - 将来的には共通CSS・画像・ヘッダーを分離すると、更新しやすく容量も小さくできます。
+
+
+## アイコン画像
+
+`assets/ftec-logo.jpg`、`assets/ftec-icon.png`、`assets/favicon.png`、`assets/line-qr.png` を実ファイルとして収録しています。
