@@ -1,95 +1,84 @@
-/*
- * F-tec global patch stylesheet
- * 今後の軽微なデザイン修正は、巨大なHTMLではなくこのファイルに追記します。
- */
+/* F-tec mobile navigation hotfix v5
+   - Removes every legacy/generated arrow inside the mobile menu
+   - Adds exactly one SVG arrow per link
+   - Makes the direct "グッズ販売" row match the accordion headings
+*/
 
 @media (max-width: 1100px) {
-  /* デスクトップメニューに元から入っている文字矢印はスマホ側では非表示 */
-  .mobile-menu .ftec-mobile-links a > span[aria-hidden="true"] {
+  /* 古いCSSが作る疑似要素の矢印をすべて停止 */
+  .mobile-menu a::before,
+  .mobile-menu a::after {
+    content: none !important;
     display: none !important;
+    background: none !important;
   }
 
-  /* グッズ販売など、プルダウンを持たない直リンクも他の大項目と揃える */
-  .mobile-menu .ftec-mobile-direct {
+  /* JSで挿入する唯一の矢印 */
+  .mobile-menu .ftec-hotfix-arrow-v5 {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 24px !important;
+    height: 14px !important;
+    margin-left: auto !important;
+    color: #2fb8cf !important;
+    overflow: visible !important;
+  }
+
+  .mobile-menu .ftec-hotfix-arrow-v5.is-external {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .mobile-menu .ftec-hotfix-arrow-v5 path {
+    fill: none !important;
+    stroke: currentColor !important;
+    stroke-width: 1.25 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+  }
+
+  /* グッズ販売：他の大項目と完全に同じ行にする */
+  .mobile-menu a.ftec-hotfix-top-link-v5 {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    gap: 20px !important;
     width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
     padding: 18px 0 !important;
+    border: 0 !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
     color: #fff !important;
+    font-family: inherit !important;
     font-size: clamp(18px, 5vw, 25px) !important;
     font-weight: 600 !important;
     line-height: 1.45 !important;
     letter-spacing: 0.02em !important;
+    text-decoration: none !important;
   }
 
-  /* 共通の矢印領域 */
-  .mobile-menu .ftec-mobile-direct::after,
-  .mobile-menu .ftec-mobile-links a::after,
-  .mobile-menu .ftec-mobile-contact::after {
-    content: "" !important;
-    flex: 0 0 auto;
-    display: block;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-  }
-
-  /* 内部リンク：細い右向き矢印 */
-  .mobile-menu .ftec-mobile-direct::after,
-  .mobile-menu .ftec-mobile-links a:not([target="_blank"])::after,
-  .mobile-menu .ftec-mobile-contact::after {
-    width: 24px;
-    height: 12px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12' fill='none'%3E%3Cpath d='M1 6H22M17 1L22 6L17 11' stroke='%232FB8CF' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-
-  /* 外部リンク：細い斜め矢印 */
-  .mobile-menu .ftec-mobile-links a[target="_blank"]::after {
-    width: 18px;
-    height: 18px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 14L14 4M7 4H14V11' stroke='%232FB8CF' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  }
-
-  .mobile-menu .ftec-mobile-links a {
+  /* 開いたメニュー内の小項目 */
+  .mobile-menu a.ftec-hotfix-sub-link-v5 {
+    display: flex !important;
     align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    width: 100% !important;
   }
 
-  /* 問い合わせボタンの矢印は文字との間隔を確保 */
-  .mobile-menu .ftec-mobile-contact {
-    gap: 20px;
+  /* お問い合わせ */
+  .mobile-menu a.ftec-hotfix-contact-v5 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
   }
-}
 
-/* iPhoneで ↗ が青い絵文字アイコンになるのを防ぎ、線の矢印へ統一 */
-.hero-actions .button > span {
-  flex: 0 0 auto;
-  display: inline-block !important;
-  width: 18px !important;
-  height: 18px !important;
-  overflow: hidden;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 14L14 4M7 4H14V11' stroke='%23115CCC' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-}
-
-/* 下段のテキストリンクも文字記号ではなく細いSVG矢印に統一 */
-.hero-actions .text-link > span {
-  flex: 0 0 auto;
-  display: inline-block !important;
-  width: 24px !important;
-  height: 12px !important;
-  overflow: hidden;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12' fill='none'%3E%3Cpath d='M1 6H22M17 1L22 6L17 11' stroke='%23FFFFFF' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  /* 旧矢印要素はJS削除前にも見えないよう保険 */
+  .mobile-menu [data-ftec-legacy-arrow-v5="true"] {
+    display: none !important;
+  }
 }
