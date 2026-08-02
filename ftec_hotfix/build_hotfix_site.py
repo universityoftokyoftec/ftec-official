@@ -6,30 +6,7 @@ import re
 import sys
 from pathlib import Path
 
-VERSION = "20260802-9"
-
-EXTERNAL_SVG = (
-    '<svg class="ftec-hotfix-inline-arrow-v9 is-external" viewBox="0 0 18 18" '
-    'aria-hidden="true" focusable="false"><path d="M4 14L14 4M7 4H14V11"/></svg>'
-)
-INTERNAL_SVG = (
-    '<svg class="ftec-hotfix-inline-arrow-v9 is-internal" viewBox="0 0 24 14" '
-    'aria-hidden="true" focusable="false"><path d="M1 7H22M17 2L22 7L17 12"/></svg>'
-)
-
-ARROW_ELEMENT_RE = re.compile(
-    r'<(?P<tag>span|i|b|em|strong|small)(?P<attrs>[^>]*)>'
-    r'\s*(?P<arrow>[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴])[\uFE0E\uFE0F]?\s*'
-    r'</(?P=tag)>',
-    flags=re.IGNORECASE,
-)
-
-ARROW_ONLY_CONTAINER_RE = re.compile(
-    r'<(?P<tag>a|button)(?P<attrs>[^>]*)>'
-    r'\s*(?P<arrow>[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴])[\uFE0E\uFE0F]?\s*'
-    r'</(?P=tag)>',
-    flags=re.IGNORECASE,
-)
+VERSION = "20260802-11"
 
 
 def relative_asset(html_path: Path, site_root: Path, filename: str) -> str:
@@ -37,20 +14,9 @@ def relative_asset(html_path: Path, site_root: Path, filename: str) -> str:
     return os.path.relpath(target, start=html_path.parent).replace(os.sep, "/")
 
 
-def replace_arrow_element(match: re.Match[str]) -> str:
-    tag = match.group("tag")
-    attrs = match.group("attrs")
-    arrow = match.group("arrow")
-    svg = EXTERNAL_SVG if arrow in {"↗", "⤴"} else INTERNAL_SVG
-    return f'<{tag}{attrs}>{svg}</{tag}>'
-
-
 def inject(path: Path, site_root: Path) -> bool:
     text = path.read_text(encoding="utf-8", errors="strict")
     original = text
-
-    text = ARROW_ELEMENT_RE.sub(replace_arrow_element, text)
-    text = ARROW_ONLY_CONTAINER_RE.sub(replace_arrow_element, text)
 
     css = relative_asset(path, site_root, "ftec-hotfix.css")
     js = relative_asset(path, site_root, "ftec-hotfix.js")
@@ -78,7 +44,7 @@ def main() -> int:
 
     files = sorted(root.rglob("*.html"))
     changed = sum(inject(path, root) for path in files)
-    print(f"F-tec hotfix v9: {changed}/{len(files)} HTML files updated.")
+    print(f"F-tec hotfix v11: {changed}/{len(files)} HTML files updated.")
     return 0
 
 

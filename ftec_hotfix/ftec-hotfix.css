@@ -1,79 +1,73 @@
-/* F-tec lightweight hotfix v9
-   Mobile navigation: one arrow per link, at the far right only.
+/* F-tec lightweight hotfix v11
+   Mobile navigation: exactly one CSS-drawn arrow at the far right.
 */
 
-/* Page-wide SVG arrows used by the existing hotfix pipeline */
-.ftec-hotfix-inline-arrow-v9,
-.ftec-hotfix-arrow-host-v9 > svg {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: visible !important;
-}
-
-.ftec-hotfix-inline-arrow-v9 path,
-.ftec-hotfix-arrow-host-v9 > svg path {
-  fill: none !important;
-  stroke: currentColor !important;
-  stroke-width: 1.25 !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
-}
-
-.ftec-hotfix-arrow-host-v9 {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex: 0 0 auto !important;
-  color: inherit !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  font-family: inherit !important;
-  font-style: normal !important;
-  vertical-align: middle !important;
-}
-
-.ftec-hotfix-arrow-host-v9.is-external,
-.ftec-hotfix-inline-arrow-v9.is-external {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-.ftec-hotfix-arrow-host-v9.is-internal,
-.ftec-hotfix-inline-arrow-v9.is-internal {
-  width: 24px !important;
-  height: 14px !important;
-}
-
 @media (max-width: 1100px) {
-  /* Kill every arrow source that predates v9. */
-  .mobile-menu a::before,
-  .mobile-menu a::after {
-    content: none !important;
-    display: none !important;
-    background: none !important;
-  }
-
+  /* Hide every arrow that exists inside the link markup, including arrows
+     left by the desktop menu and all earlier hotfix versions. */
   .mobile-menu a > span[aria-hidden="true"],
   .mobile-menu a > i[aria-hidden="true"],
   .mobile-menu a > b[aria-hidden="true"],
+  .mobile-menu a > svg,
   .mobile-menu a .ftec-hotfix-arrow-host-v5,
   .mobile-menu a .ftec-hotfix-arrow-host-v7,
   .mobile-menu a .ftec-hotfix-arrow-host-v8,
+  .mobile-menu a .ftec-hotfix-arrow-host-v9,
   .mobile-menu a .ftec-hotfix-inline-arrow-v5,
   .mobile-menu a .ftec-hotfix-inline-arrow-v7,
   .mobile-menu a .ftec-hotfix-inline-arrow-v8,
+  .mobile-menu a .ftec-hotfix-inline-arrow-v9,
   .mobile-menu a .ftec-hotfix-menu-arrow-v5,
   .mobile-menu a .ftec-hotfix-menu-arrow-v7,
   .mobile-menu a .ftec-hotfix-menu-arrow-v8,
-  .mobile-menu a svg:not(.ftec-hotfix-menu-arrow-v9) {
+  .mobile-menu a .ftec-hotfix-menu-arrow-v9,
+  .mobile-menu a .ftec-v10-menu-arrow {
     display: none !important;
   }
 
-  /* Every menu link is one row with one arrow at the far right. */
-  .mobile-menu a.ftec-hotfix-sub-link-v9,
-  .mobile-menu a.ftec-hotfix-contact-v9,
-  .mobile-menu a.ftec-hotfix-top-link-v9 {
+  /* One arrow only: a CSS-drawn SVG at the far right. It is not a text
+     character, so iPhone cannot convert it into an emoji. */
+  .mobile-menu .ftec-mobile-links a::before,
+  .mobile-menu .ftec-mobile-direct::before,
+  .mobile-menu .ftec-mobile-contact::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .mobile-menu .ftec-mobile-links a::after,
+  .mobile-menu .ftec-mobile-direct::after,
+  .mobile-menu a.ftec-v11-goods::after {
+    content: "" !important;
+    display: block !important;
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 14px !important;
+    margin: 0 0 0 auto !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 24px 14px !important;
+  }
+
+  .mobile-menu .ftec-mobile-contact::after {
+    content: "" !important;
+    display: block !important;
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 14px !important;
+    margin: 0 0 0 auto !important;
+    background-color: transparent !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 24px 14px !important;
+  }
+
+  .mobile-menu .ftec-mobile-links a,
+  .mobile-menu .ftec-mobile-direct,
+  .mobile-menu .ftec-mobile-contact,
+  .mobile-menu a.ftec-v11-goods {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -81,26 +75,8 @@
     width: 100% !important;
   }
 
-  .mobile-menu .ftec-hotfix-menu-arrow-v9 {
-    display: block !important;
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 14px !important;
-    margin-left: auto !important;
-    color: #2fb8cf !important;
-    overflow: visible !important;
-  }
-
-  .mobile-menu .ftec-hotfix-menu-arrow-v9 path {
-    fill: none !important;
-    stroke: currentColor !important;
-    stroke-width: 1.25 !important;
-    stroke-linecap: round !important;
-    stroke-linejoin: round !important;
-  }
-
   /* Goods is a top-level row, matching the accordion headings. */
-  .mobile-menu a.ftec-hotfix-top-link-v9 {
+  .mobile-menu a.ftec-v11-goods {
     min-height: 0 !important;
     margin: 0 !important;
     padding: 18px 0 !important;
