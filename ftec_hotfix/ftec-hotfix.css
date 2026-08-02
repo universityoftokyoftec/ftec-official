@@ -144,3 +144,60 @@ html body button[data-ftec-arrow-only="true"] .ftec-arrow-slot {
     padding-bottom: calc(20px + env(safe-area-inset-bottom)) !important;
   }
 }
+
+/* v18: Mobile-menu arrows are CSS-rendered so they remain visible even when
+   the menu is rebuilt dynamically. Exactly one arrow is shown per link. */
+@media (max-width: 1100px) {
+  /* Hide every inline/JS-inserted arrow inside the mobile menu. */
+  html body .mobile-menu a .ftec-arrow-slot,
+  html body .mobile-menu a > span[aria-hidden="true"],
+  html body .mobile-menu a > i[aria-hidden="true"],
+  html body .mobile-menu a > b[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* Internal links: one horizontal arrow at the far right. */
+  html body .mobile-menu .ftec-mobile-links a::after,
+  html body .mobile-menu a.ftec-mobile-direct::after,
+  html body .mobile-menu a.ftec-mobile-contact::after {
+    content: "" !important;
+    display: block !important;
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 16px !important;
+    margin-left: auto !important;
+    background: var(--cyan, #2fb8cf) !important;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+  }
+
+  /* External links: one diagonal arrow at the far right. */
+  html body .mobile-menu .ftec-mobile-links a[target="_blank"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="note.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="x.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="twitter.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="instagram.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="facebook.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="line.me"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="lin.ee"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="youtube.com"]::after,
+  html body .mobile-menu .ftec-mobile-links a[href*="youtu.be"]::after {
+    flex-basis: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='black' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  }
+
+  /* Contact button uses the dark site color instead of cyan. */
+  html body .mobile-menu a.ftec-mobile-contact::after,
+  html body .mobile-menu a[data-ftec-contact="true"]::after {
+    background: var(--deep, #031136) !important;
+  }
+}
