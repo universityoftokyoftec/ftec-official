@@ -1,11 +1,63 @@
-/* F-tec mobile navigation hotfix v5
-   - Removes every legacy/generated arrow inside the mobile menu
-   - Adds exactly one SVG arrow per link
-   - Makes the direct "グッズ販売" row match the accordion headings
+/* F-tec lightweight hotfix v8
+   iPhone/Safariで文字の↗が絵文字化する問題を、文字ではなくSVGへ置換して解消。
+   スマホメニューの矢印重複と「グッズ販売」の行崩れも同時に補正。
 */
 
+/* HTML内の矢印文字を置き換えたSVG */
+.ftec-hotfix-inline-arrow-v8,
+.ftec-hotfix-arrow-host-v8 > svg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+
+.ftec-hotfix-inline-arrow-v8 path,
+.ftec-hotfix-arrow-host-v8 > svg path {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.25 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+/* 元のspan/i/bなどの箱は残し、中身だけSVG化する */
+.ftec-hotfix-arrow-host-v8 {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  color: inherit !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  font-family: inherit !important;
+  font-style: normal !important;
+  vertical-align: middle !important;
+}
+
+.ftec-hotfix-arrow-host-v8.is-external {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.ftec-hotfix-arrow-host-v8.is-internal {
+  width: 24px !important;
+  height: 14px !important;
+}
+
+/* ビルド時に直接差し込んだSVGにも寸法を付ける */
+.ftec-hotfix-inline-arrow-v8.is-external {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.ftec-hotfix-inline-arrow-v8.is-internal {
+  width: 24px !important;
+  height: 14px !important;
+}
+
 @media (max-width: 1100px) {
-  /* 古いCSSが作る疑似要素の矢印をすべて停止 */
+  /* 古いCSSが生成するスマホメニューの疑似要素矢印を停止 */
   .mobile-menu a::before,
   .mobile-menu a::after {
     content: none !important;
@@ -13,8 +65,8 @@
     background: none !important;
   }
 
-  /* JSで挿入する唯一の矢印 */
-  .mobile-menu .ftec-hotfix-arrow-v5 {
+  /* スマホメニュー内はJSが入れる矢印だけ表示 */
+  .mobile-menu .ftec-hotfix-menu-arrow-v8 {
     display: block !important;
     flex: 0 0 auto !important;
     width: 24px !important;
@@ -24,12 +76,12 @@
     overflow: visible !important;
   }
 
-  .mobile-menu .ftec-hotfix-arrow-v5.is-external {
+  .mobile-menu .ftec-hotfix-menu-arrow-v8.is-external {
     width: 18px !important;
     height: 18px !important;
   }
 
-  .mobile-menu .ftec-hotfix-arrow-v5 path {
+  .mobile-menu .ftec-hotfix-menu-arrow-v8 path {
     fill: none !important;
     stroke: currentColor !important;
     stroke-width: 1.25 !important;
@@ -37,8 +89,8 @@
     stroke-linejoin: round !important;
   }
 
-  /* グッズ販売：他の大項目と完全に同じ行にする */
-  .mobile-menu a.ftec-hotfix-top-link-v5 {
+  /* グッズ販売を、ほかの大項目と同じ行へ */
+  .mobile-menu a.ftec-hotfix-top-link-v8 {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -60,25 +112,12 @@
     text-decoration: none !important;
   }
 
-  /* 開いたメニュー内の小項目 */
-  .mobile-menu a.ftec-hotfix-sub-link-v5 {
+  .mobile-menu a.ftec-hotfix-sub-link-v8,
+  .mobile-menu a.ftec-hotfix-contact-v8 {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: 20px !important;
     width: 100% !important;
-  }
-
-  /* お問い合わせ */
-  .mobile-menu a.ftec-hotfix-contact-v5 {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 20px !important;
-  }
-
-  /* 旧矢印要素はJS削除前にも見えないよう保険 */
-  .mobile-menu [data-ftec-legacy-arrow-v5="true"] {
-    display: none !important;
   }
 }

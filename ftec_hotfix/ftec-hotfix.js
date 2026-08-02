@@ -1,53 +1,19 @@
-/* F-tec mobile navigation hotfix v7 */
+/* F-tec lightweight hotfix v8 */
 (() => {
   'use strict';
 
+  const VERSION = '8';
   const MENU_SELECTOR = '.mobile-menu';
-  const ARROW_CHARS = /^[\s→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴︎↗︎↗️]+$/u;
+  const ARROW_ONLY = /^\s*([→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴])[\uFE0E\uFE0F]?\s*$/u;
+  const EXTERNAL_ARROWS = /[↗⤴]/u;
   let scheduled = false;
 
-  const normalizedText = (node) =>
-    (node.textContent || '')
-      .replace(/[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴︎]/gu, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-
-  const isLegacyArrow = (element) => {
-    if (!(element instanceof HTMLElement) && !(element instanceof SVGElement)) return false;
-    if (element.classList.contains('ftec-hotfix-arrow-v7')) return true;
-
-    const text = (element.textContent || '').trim();
-    const ariaHidden = element.getAttribute('aria-hidden') === 'true';
-    const likelyArrowClass = /arrow|icon|external|chevron/i.test(element.className?.baseVal || element.className || '');
-
-    return (
-      (text && text.length <= 4 && ARROW_CHARS.test(text)) ||
-      (ariaHidden && text.length <= 4) ||
-      (likelyArrowClass && text.length <= 4)
-    );
-  };
-
-  const removeLegacyArrows = (link) => {
-    [...link.children].forEach((child) => {
-      if (isLegacyArrow(child)) child.remove();
-    });
-
-    /* 矢印だけのテキストノードにも対応 */
-    [...link.childNodes].forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const value = node.nodeValue || '';
-        if (value.trim() && ARROW_CHARS.test(value.trim())) node.remove();
-      }
-    });
-  };
-
-  const createArrow = (external) => {
+  const makeSvg = (external, className) => {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', external ? '0 0 18 18' : '0 0 24 14');
     svg.setAttribute('aria-hidden', 'true');
     svg.setAttribute('focusable', 'false');
-    svg.classList.add('ftec-hotfix-arrow-v7');
-    if (external) svg.classList.add('is-external');
+    svg.classList.add(className, external ? 'is-external' : 'is-internal');
 
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute(
@@ -58,12 +24,77 @@
     return svg;
   };
 
+  const replaceStandaloneArrowElement = (element) => {
+    if (!(element instanceof HTMLElement)) return;
+    if (element.closest(MENU_SELECTOR)) return;
+    if (element.querySelector('svg')) return;
+
+    const match = (element.textContent || '').match(ARROW_ONLY);
+    if (!match) return;
+
+    const external = EXTERNAL_ARROWS.test(match[1]);
+    element.replaceChildren(makeSvg(external, 'ftec-hotfix-inline-arrow-v8'));
+    element.classList.add(
+      'ftec-hotfix-arrow-host-v8',
+      external ? 'is-external' : 'is-internal'
+    );
+  };
+
+  const replaceStandaloneArrowTextNode = (node) => {
+    if (node.nodeType !== Node.TEXT_NODE || !node.parentElement) return;
+    if (node.parentElement.closest(MENU_SELECTOR)) return;
+    if (/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|SVG)$/i.test(node.parentElement.tagName)) return;
+
+    const match = (node.nodeValue || '').match(ARROW_ONLY);
+    if (!match) return;
+
+    const external = EXTERNAL_ARROWS.test(match[1]);
+    const host = document.createElement('span');
+    host.setAttribute('aria-hidden', 'true');
+    host.className = `ftec-hotfix-arrow-host-v8 ${external ? 'is-external' : 'is-internal'}`;
+    host.appendChild(makeSvg(external, 'ftec-hotfix-inline-arrow-v8'));
+    node.replaceWith(host);
+  };
+
+  const replaceGlobalGlyphArrows = (root = document.body) => {
+    if (!root) return;
+
+    root.querySelectorAll('span, i, b, em, strong, small').forEach(replaceStandaloneArrowElement);
+
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(replaceStandaloneArrowTextNode);
+  };
+
+  const normalizedText = (node) =>
+    (node.textContent || '')
+      .replace(/[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const isLegacyMenuArrow = (element) => {
+    if (!(element instanceof Element)) return false;
+    if (element.matches('.ftec-hotfix-menu-arrow-v8, .ftec-hotfix-arrow-v5, .ftec-hotfix-arrow-v7, .ftec-hotfix-inline-arrow-v8')) return true;
+    const text = (element.textContent || '').trim();
+    return Boolean(text.match(ARROW_ONLY));
+  };
+
+  const removeLegacyMenuArrows = (link) => {
+    [...link.children].forEach((child) => {
+      if (isLegacyMenuArrow(child)) child.remove();
+    });
+    [...link.childNodes].forEach((node) => {
+      if (node.nodeType === Node.TEXT_NODE && (node.nodeValue || '').match(ARROW_ONLY)) node.remove();
+    });
+  };
+
   const setImportant = (element, property, value) => {
     element.style.setProperty(property, value, 'important');
   };
 
   const styleGoodsLink = (link) => {
-    link.classList.add('ftec-hotfix-top-link-v7');
+    link.classList.add('ftec-hotfix-top-link-v8');
     setImportant(link, 'display', 'flex');
     setImportant(link, 'align-items', 'center');
     setImportant(link, 'justify-content', 'space-between');
@@ -82,101 +113,61 @@
     setImportant(link, 'letter-spacing', '.02em');
   };
 
-  const fixLink = (link) => {
+  const fixMenuLink = (link) => {
     if (!(link instanceof HTMLAnchorElement)) return;
 
-    const labelBefore = normalizedText(link);
-    removeLegacyArrows(link);
+    const label = normalizedText(link);
+    removeLegacyMenuArrows(link);
 
     link.classList.remove(
-      'ftec-hotfix-top-link-v7',
-      'ftec-hotfix-sub-link-v7',
-      'ftec-hotfix-contact-v7'
+      'ftec-hotfix-top-link-v5', 'ftec-hotfix-sub-link-v5', 'ftec-hotfix-contact-v5',
+      'ftec-hotfix-top-link-v7', 'ftec-hotfix-sub-link-v7', 'ftec-hotfix-contact-v7',
+      'ftec-hotfix-top-link-v8', 'ftec-hotfix-sub-link-v8', 'ftec-hotfix-contact-v8'
     );
 
-    if (labelBefore === 'グッズ販売') {
+    if (label === 'グッズ販売') {
       styleGoodsLink(link);
-    } else if (labelBefore === 'お問い合わせ') {
-      link.classList.add('ftec-hotfix-contact-v7');
+    } else if (label === 'お問い合わせ') {
+      link.classList.add('ftec-hotfix-contact-v8');
     } else {
-      link.classList.add('ftec-hotfix-sub-link-v7');
+      link.classList.add('ftec-hotfix-sub-link-v8');
     }
 
     const external = link.target === '_blank' || /^(https?:)?\/\//i.test(link.getAttribute('href') || '');
-    link.appendChild(createArrow(external));
-    link.dataset.ftecHotfixV7 = 'done';
+    link.appendChild(makeSvg(external, 'ftec-hotfix-menu-arrow-v8'));
+    link.dataset.ftecHotfixV8 = 'done';
   };
 
   const fixMenu = () => {
-    const menu = document.querySelector(MENU_SELECTOR);
-    if (!menu) return;
-
-    menu.querySelectorAll('a').forEach(fixLink);
-    menu.dataset.ftecHotfixVersion = '7';
-    document.documentElement.dataset.ftecHotfixVersion = '7';
+    document.querySelectorAll(`${MENU_SELECTOR} a`).forEach(fixMenuLink);
+    document.documentElement.dataset.ftecHotfixVersion = VERSION;
   };
 
-  const scheduleFix = () => {
+  const applyAll = () => {
+    replaceGlobalGlyphArrows(document.body);
+    fixMenu();
+  };
+
+  const scheduleApply = () => {
     if (scheduled) return;
     scheduled = true;
     requestAnimationFrame(() => {
       scheduled = false;
-      fixMenu();
-    });
-  };
-
-
-
-  /*
-   * iOS/Safari may render U+2197 and related arrows as colorful emoji.
-   * Force the Unicode text presentation selector (U+FE0E) everywhere,
-   * including content inserted after page load.
-   */
-  const EMOJI_PRONE_ARROWS = /([\u2196\u2197\u2198\u2199\u2934\u2935\u2B05\u2B06\u2B07\u27A1])[\uFE0E\uFE0F]?/gu;
-
-  const forceTextArrowPresentation = (root = document.body) => {
-    if (!root) return;
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        const parent = node.parentElement;
-        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA)$/i.test(parent.tagName)) {
-          return NodeFilter.FILTER_REJECT;
-        }
-        return EMOJI_PRONE_ARROWS.test(node.nodeValue || '')
-          ? NodeFilter.FILTER_ACCEPT
-          : NodeFilter.FILTER_REJECT;
-      }
-    });
-
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach((node) => {
-      EMOJI_PRONE_ARROWS.lastIndex = 0;
-      node.nodeValue = (node.nodeValue || '').replace(EMOJI_PRONE_ARROWS, '$1\uFE0E');
+      applyAll();
     });
   };
 
   const start = () => {
-    forceTextArrowPresentation(document.body);
-    fixMenu();
+    applyAll();
 
     const observer = new MutationObserver((mutations) => {
-      const relevant = mutations.some((mutation) =>
-        [...mutation.addedNodes].some((node) =>
-          node.nodeType === Node.ELEMENT_NODE &&
-          (node.matches?.(MENU_SELECTOR) || node.querySelector?.(MENU_SELECTOR) || node.closest?.(MENU_SELECTOR))
-        )
-      );
-      forceTextArrowPresentation(document.body);
-      if (relevant) scheduleFix();
+      if (mutations.some((mutation) => mutation.addedNodes.length > 0)) scheduleApply();
     });
-
     observer.observe(document.documentElement, { childList: true, subtree: true });
 
-    /* 元スクリプトが遅れてメニューを再生成する場合の保険 */
-    setTimeout(() => { forceTextArrowPresentation(document.body); fixMenu(); }, 0);
-    setTimeout(() => { forceTextArrowPresentation(document.body); fixMenu(); }, 250);
-    setTimeout(() => { forceTextArrowPresentation(document.body); fixMenu(); }, 1000);
+    setTimeout(applyAll, 0);
+    setTimeout(applyAll, 250);
+    setTimeout(applyAll, 1000);
   };
 
   if (document.readyState === 'loading') {
