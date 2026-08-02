@@ -1,10 +1,45 @@
-/* F-tec lightweight hotfix v11
-   Mobile navigation: exactly one CSS-drawn arrow at the far right.
+/* F-tec lightweight hotfix v12
+   1) iPhone が ↗ を絵文字化する問題を、文字ではなく SVG に置換
+   2) スマホメニューは矢印を右端に1個だけ表示
 */
 
+/* JSが通常ページの矢印文字を置き換えたSVG */
+.ftec-v12-arrow-host {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  font-style: normal !important;
+  vertical-align: middle !important;
+  color: inherit !important;
+}
+.ftec-v12-arrow-host.is-internal { width: 24px !important; height: 14px !important; }
+.ftec-v12-arrow-host.is-external { width: 18px !important; height: 18px !important; }
+.ftec-v12-arrow-host > svg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+}
+.ftec-v12-arrow-host path {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.25 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
 @media (max-width: 1100px) {
-  /* Hide every arrow that exists inside the link markup, including arrows
-     left by the desktop menu and all earlier hotfix versions. */
+  /* 元HTML・過去パッチの矢印をすべて無効化。 */
+  .mobile-menu a::before,
+  .mobile-menu a::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+  }
+
   .mobile-menu a > span[aria-hidden="true"],
   .mobile-menu a > i[aria-hidden="true"],
   .mobile-menu a > b[aria-hidden="true"],
@@ -13,61 +48,14 @@
   .mobile-menu a .ftec-hotfix-arrow-host-v7,
   .mobile-menu a .ftec-hotfix-arrow-host-v8,
   .mobile-menu a .ftec-hotfix-arrow-host-v9,
-  .mobile-menu a .ftec-hotfix-inline-arrow-v5,
-  .mobile-menu a .ftec-hotfix-inline-arrow-v7,
-  .mobile-menu a .ftec-hotfix-inline-arrow-v8,
-  .mobile-menu a .ftec-hotfix-inline-arrow-v9,
-  .mobile-menu a .ftec-hotfix-menu-arrow-v5,
-  .mobile-menu a .ftec-hotfix-menu-arrow-v7,
-  .mobile-menu a .ftec-hotfix-menu-arrow-v8,
-  .mobile-menu a .ftec-hotfix-menu-arrow-v9,
-  .mobile-menu a .ftec-v10-menu-arrow {
+  .mobile-menu a .ftec-v10-menu-arrow,
+  .mobile-menu a .ftec-v12-arrow-host {
     display: none !important;
   }
 
-  /* One arrow only: a CSS-drawn SVG at the far right. It is not a text
-     character, so iPhone cannot convert it into an emoji. */
-  .mobile-menu .ftec-mobile-links a::before,
-  .mobile-menu .ftec-mobile-direct::before,
-  .mobile-menu .ftec-mobile-contact::before {
-    content: none !important;
-    display: none !important;
-  }
-
-  .mobile-menu .ftec-mobile-links a::after,
-  .mobile-menu .ftec-mobile-direct::after,
-  .mobile-menu a.ftec-v11-goods::after {
-    content: "" !important;
-    display: block !important;
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 14px !important;
-    margin: 0 0 0 auto !important;
-    background-color: transparent !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: 24px 14px !important;
-  }
-
-  .mobile-menu .ftec-mobile-contact::after {
-    content: "" !important;
-    display: block !important;
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 14px !important;
-    margin: 0 0 0 auto !important;
-    background-color: transparent !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: 24px 14px !important;
-  }
-
-  .mobile-menu .ftec-mobile-links a,
-  .mobile-menu .ftec-mobile-direct,
-  .mobile-menu .ftec-mobile-contact,
-  .mobile-menu a.ftec-v11-goods {
+  .mobile-menu a.ftec-v12-menu-link,
+  .mobile-menu a.ftec-v12-goods,
+  .mobile-menu a.ftec-v12-contact {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -75,8 +63,29 @@
     width: 100% !important;
   }
 
-  /* Goods is a top-level row, matching the accordion headings. */
-  .mobile-menu a.ftec-v11-goods {
+  /* 右端に一つだけ描画。文字ではないので絵文字化しない。 */
+  .mobile-menu a.ftec-v12-menu-link::after,
+  .mobile-menu a.ftec-v12-goods::after,
+  .mobile-menu a.ftec-v12-contact::after {
+    content: "" !important;
+    display: block !important;
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 14px !important;
+    margin-left: auto !important;
+    background-color: transparent !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 24px 14px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  }
+
+  .mobile-menu a.ftec-v12-contact::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  }
+
+  /* グッズ販売を他の大項目と同じ行にする。 */
+  .mobile-menu a.ftec-v12-goods {
     min-height: 0 !important;
     margin: 0 !important;
     padding: 18px 0 !important;
