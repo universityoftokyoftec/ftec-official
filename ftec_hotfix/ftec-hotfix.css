@@ -1,0 +1,63 @@
+/*
+ * F-tec global patch stylesheet
+ * 今後の軽微なデザイン修正は、巨大なHTMLではなくこのファイルに追記します。
+ */
+
+@media (max-width: 1100px) {
+  /* デスクトップメニューに元から入っている文字矢印はスマホ側では非表示 */
+  .mobile-menu .ftec-mobile-links a > span[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* グッズ販売など、プルダウンを持たない直リンクも他の大項目と揃える */
+  .mobile-menu .ftec-mobile-direct {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    padding: 18px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #fff !important;
+    font-size: clamp(18px, 5vw, 25px) !important;
+    font-weight: 600 !important;
+    line-height: 1.45 !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  /* 共通の矢印領域 */
+  .mobile-menu .ftec-mobile-direct::after,
+  .mobile-menu .ftec-mobile-links a::after,
+  .mobile-menu .ftec-mobile-contact::after {
+    content: "" !important;
+    flex: 0 0 auto;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+
+  /* 内部リンク：細い右向き矢印 */
+  .mobile-menu .ftec-mobile-direct::after,
+  .mobile-menu .ftec-mobile-links a:not([target="_blank"])::after,
+  .mobile-menu .ftec-mobile-contact::after {
+    width: 24px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' viewBox='0 0 24 12' fill='none'%3E%3Cpath d='M1 6H22M17 1L22 6L17 11' stroke='%232FB8CF' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  /* 外部リンク：細い斜め矢印 */
+  .mobile-menu .ftec-mobile-links a[target="_blank"]::after {
+    width: 18px;
+    height: 18px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18' fill='none'%3E%3Cpath d='M4 14L14 4M7 4H14V11' stroke='%232FB8CF' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  .mobile-menu .ftec-mobile-links a {
+    align-items: center !important;
+  }
+
+  /* 問い合わせボタンの矢印は文字との間隔を確保 */
+  .mobile-menu .ftec-mobile-contact {
+    gap: 20px;
+  }
+}
