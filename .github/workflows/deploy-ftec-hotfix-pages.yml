@@ -1,4 +1,4 @@
-name: Deploy F-tec site with hotfix
+name: Deploy F-tec site with inline hotfix
 
 on:
   push:
@@ -18,9 +18,6 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,20 +28,31 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Prepare patched site
+      - name: Build site and inline hotfix
+        shell: bash
         run: |
+          set -euo pipefail
+          rm -rf _site
           mkdir -p _site
           rsync -a ./ _site/ \
             --exclude '.git/' \
             --exclude '.github/' \
             --exclude '_site/' \
-            --exclude 'ftec_hotfix/build_hotfix_site.py' \
             --exclude '*.zip'
+
+          # Inline CSS/JS into every generated HTML. No runtime request to /ftec_hotfix is required.
           python3 ftec_hotfix/build_hotfix_site.py _site
+
+          # Also keep diagnostic copies publicly available.
+          mkdir -p _site/ftec_hotfix
+          cp ftec_hotfix/ftec-hotfix.css _site/ftec_hotfix/ftec-hotfix.css
+          cp ftec_hotfix/ftec-hotfix.js _site/ftec_hotfix/ftec-hotfix.js
+
+          test -f _site/.nojekyll
           test -f _site/ftec_hotfix/ftec-hotfix.css
           test -f _site/ftec_hotfix/ftec-hotfix.js
-          grep -q 'data-ftec-patch="css"' _site/index.html
-          grep -q 'data-ftec-patch="js"' _site/index.html
+          grep -q 'id="ftec-hotfix-inline"' _site/index.html
+          grep -q 'data-version="20260802-15"' _site/index.html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
