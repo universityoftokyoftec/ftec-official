@@ -1,4 +1,4 @@
-/* F-tec lightweight hotfix v12 */
+/* F-tec lightweight hotfix v13 */
 (() => {
   'use strict';
 
@@ -11,7 +11,7 @@
 
   function makeArrow(external) {
     const host = document.createElement('span');
-    host.className = `ftec-v12-arrow-host ${external ? 'is-external' : 'is-internal'}`;
+    host.className = `ftec-v13-arrow-host ${external ? 'is-external' : 'is-internal'}`;
     host.setAttribute('aria-hidden', 'true');
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -31,7 +31,7 @@
     document.querySelectorAll('span, i, b, em, strong, small, a, button').forEach((el) => {
       if (!(el instanceof HTMLElement)) return;
       if (el.closest(MENU)) return;
-      if (el.classList.contains('ftec-v12-arrow-host')) return;
+      if (el.classList.contains('ftec-v13-arrow-host')) return;
       if (el.children.length && ![...el.children].every((child) => child.matches('svg, path'))) return;
       const text = (el.textContent || '').trim();
       if (!ARROW_ONLY.test(text)) return;
@@ -56,7 +56,7 @@
     if (!(link instanceof HTMLAnchorElement)) return;
 
     /* 過去のSVG・矢印専用要素を削除。 */
-    link.querySelectorAll('svg, .ftec-v12-arrow-host, [class*="hotfix"][class*="arrow"], [class*="menu-arrow"]').forEach((el) => el.remove());
+    link.querySelectorAll('svg, .ftec-v13-arrow-host, [class*="hotfix"][class*="arrow"], [class*="menu-arrow"]').forEach((el) => el.remove());
 
     /* aria-hiddenの矢印文字要素だけ削除。 */
     link.querySelectorAll('[aria-hidden="true"]').forEach((el) => {
@@ -73,10 +73,19 @@
     });
 
     const label = (link.textContent || '').replace(/\s+/g, ' ').trim();
-    link.classList.remove('ftec-v11-goods', 'ftec-v12-menu-link', 'ftec-v12-goods', 'ftec-v12-contact');
-    if (label === 'グッズ販売') link.classList.add('ftec-v12-goods');
-    else if (label === 'お問い合わせ') link.classList.add('ftec-v12-contact');
-    else link.classList.add('ftec-v12-menu-link');
+    const href = link.getAttribute('href') || '';
+    let isExternal = link.target === '_blank';
+    if (!isExternal && href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
+      try { isExternal = new URL(href, location.href).origin !== location.origin; } catch (_) {}
+    }
+
+    [...link.classList].forEach((name) => {
+      if (/^ftec-v(?:5|7|8|9|10|11|12|13)-/.test(name) || /^ftec-hotfix-/.test(name)) link.classList.remove(name);
+    });
+    if (label === 'グッズ販売') link.classList.add('ftec-v13-goods');
+    else if (label === 'お問い合わせ') link.classList.add('ftec-v13-contact');
+    else link.classList.add('ftec-v13-menu-link');
+    link.classList.toggle('ftec-v13-external', isExternal);
   }
 
   function fixMenu() {

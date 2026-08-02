@@ -1,10 +1,10 @@
-/* F-tec lightweight hotfix v12
+/* F-tec lightweight hotfix v13
    1) iPhone が ↗ を絵文字化する問題を、文字ではなく SVG に置換
    2) スマホメニューは矢印を右端に1個だけ表示
 */
 
 /* JSが通常ページの矢印文字を置き換えたSVG */
-.ftec-v12-arrow-host {
+.ftec-v13-arrow-host {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -15,15 +15,15 @@
   vertical-align: middle !important;
   color: inherit !important;
 }
-.ftec-v12-arrow-host.is-internal { width: 24px !important; height: 14px !important; }
-.ftec-v12-arrow-host.is-external { width: 18px !important; height: 18px !important; }
-.ftec-v12-arrow-host > svg {
+.ftec-v13-arrow-host.is-internal { width: 24px !important; height: 14px !important; }
+.ftec-v13-arrow-host.is-external { width: 18px !important; height: 18px !important; }
+.ftec-v13-arrow-host > svg {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
   overflow: visible !important;
 }
-.ftec-v12-arrow-host path {
+.ftec-v13-arrow-host path {
   fill: none !important;
   stroke: currentColor !important;
   stroke-width: 1.25 !important;
@@ -49,13 +49,13 @@
   .mobile-menu a .ftec-hotfix-arrow-host-v8,
   .mobile-menu a .ftec-hotfix-arrow-host-v9,
   .mobile-menu a .ftec-v10-menu-arrow,
-  .mobile-menu a .ftec-v12-arrow-host {
+  .mobile-menu a .ftec-v13-arrow-host {
     display: none !important;
   }
 
-  .mobile-menu a.ftec-v12-menu-link,
-  .mobile-menu a.ftec-v12-goods,
-  .mobile-menu a.ftec-v12-contact {
+  .mobile-menu a.ftec-v13-menu-link,
+  .mobile-menu a.ftec-v13-goods,
+  .mobile-menu a.ftec-v13-contact {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -63,29 +63,34 @@
     width: 100% !important;
   }
 
-  /* 右端に一つだけ描画。文字ではないので絵文字化しない。 */
-  .mobile-menu a.ftec-v12-menu-link::after,
-  .mobile-menu a.ftec-v12-goods::after,
-  .mobile-menu a.ftec-v12-contact::after {
+  /* 内部リンクは右矢印、外部サイトは右上矢印。どちらも右端に1個だけ描画。 */
+  .mobile-menu a.ftec-v13-menu-link::after,
+  .mobile-menu a.ftec-v13-goods::after,
+  .mobile-menu a.ftec-v13-contact::after {
     content: "" !important;
     display: block !important;
     flex: 0 0 24px !important;
     width: 24px !important;
     height: 14px !important;
     margin-left: auto !important;
-    background-color: transparent !important;
-    background-repeat: no-repeat !important;
-    background-position: center !important;
-    background-size: 24px 14px !important;
+    background: transparent center / 24px 14px no-repeat !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
   }
 
-  .mobile-menu a.ftec-v12-contact::after {
+  .mobile-menu a.ftec-v13-external::after {
+    flex-basis: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-size: 18px 18px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  }
+
+  .mobile-menu a.ftec-v13-contact::after {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
   }
 
   /* グッズ販売を他の大項目と同じ行にする。 */
-  .mobile-menu a.ftec-v12-goods {
+  .mobile-menu a.ftec-v13-goods {
     min-height: 0 !important;
     margin: 0 !important;
     padding: 18px 0 !important;
