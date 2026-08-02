@@ -217,7 +217,7 @@ function sendAutoReply_(data, referenceId, receivedAt) {
   const plainBody = [
     `${data.name} 様`,
     '',
-    '東京大学人力飛行機チームF-tecです。',
+    '東京大学鳥人間サークルF-tecです。',
     'お問い合わせを受け付けました。内容を確認のうえ、担当者からご返信いたします。',
     '',
     `受付番号：${referenceId}`,
@@ -231,7 +231,7 @@ function sendAutoReply_(data, referenceId, receivedAt) {
     '※このメールは自動送信です。追加のご連絡は、このメールへの返信または',
     `${CONFIG.destinationEmail} までお願いいたします。`,
     '',
-    '東京大学人力飛行機チーム F-tec',
+    '東京大学鳥人間サークル F-tec',
   ].join('\n');
 
   MailApp.sendEmail({
