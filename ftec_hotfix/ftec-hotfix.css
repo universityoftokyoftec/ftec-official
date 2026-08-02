@@ -1,8 +1,63 @@
-/* F-tec inline hotfix v15
-   Mobile menu: one arrow only. Internal links use →, external links use ↗.
+/* F-tec inline hotfix v16
+   Every visual arrow is an SVG, never an emoji.
+   Internal links: horizontal arrow. External links: diagonal arrow.
 */
+
+/* Suppress old pseudo-element arrows on elements normalized by v16. */
+html body a[data-ftec-arrow-ready="true"]::before,
+html body a[data-ftec-arrow-ready="true"]::after,
+html body button[data-ftec-arrow-ready="true"]::before,
+html body button[data-ftec-arrow-ready="true"]::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+}
+
+html body .ftec-arrow-slot {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: 22px;
+  height: 18px;
+  margin-left: auto;
+  color: currentColor;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  vertical-align: middle;
+}
+
+html body .ftec-arrow-svg {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+html body .button .ftec-arrow-slot,
+html body .text-link .ftec-arrow-slot {
+  width: 19px;
+  height: 16px;
+}
+
+html body .footer-social__link .ftec-arrow-slot {
+  width: 17px;
+  height: 17px;
+  margin-left: 0;
+}
+
+html body a[data-ftec-arrow-only="true"] .ftec-arrow-slot,
+html body button[data-ftec-arrow-only="true"] .ftec-arrow-slot {
+  margin: auto;
+}
+
 @media (max-width: 1100px) {
-  /* Remove all pre-existing arrow nodes/pseudo-elements before drawing ours. */
+  /* The legacy mobile menu adds arrows via CSS. Remove those completely. */
   html body .mobile-menu a::before,
   html body .mobile-menu a::after {
     content: none !important;
@@ -10,11 +65,10 @@
     background: none !important;
   }
 
-  html body .mobile-menu a > span[aria-hidden="true"],
-  html body .mobile-menu a > i[aria-hidden="true"],
-  html body .mobile-menu a > b[aria-hidden="true"],
-  html body .mobile-menu a > svg,
-  html body .mobile-menu a [class*="arrow" i] {
+  html body .mobile-menu a > span[aria-hidden="true"]:not(.ftec-arrow-slot),
+  html body .mobile-menu a > i[aria-hidden="true"]:not(.ftec-arrow-slot),
+  html body .mobile-menu a > b[aria-hidden="true"]:not(.ftec-arrow-slot),
+  html body .mobile-menu a [class*="arrow" i]:not(.ftec-arrow-slot) {
     display: none !important;
   }
 
@@ -26,50 +80,23 @@
     width: 100% !important;
   }
 
-  /* Internal link: one horizontal arrow at the far right. */
-  html body .mobile-menu a[data-ftec-menu-link="true"]::after {
-    content: "" !important;
-    display: block !important;
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 14px !important;
-    margin-left: auto !important;
-    background: center / 24px 14px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  html body .mobile-menu .ftec-arrow-slot {
+    display: inline-flex !important;
+    width: 24px;
+    height: 16px;
+    margin-left: auto;
+    color: var(--cyan, #2fb8cf);
   }
 
-  /* External link: one diagonal arrow at the far right. */
-  html body .mobile-menu a[data-ftec-external="true"]::after,
-  html body .mobile-menu a[target="_blank"]::after,
-  html body .mobile-menu a[href*="note.com/"]::after,
-  html body .mobile-menu a[href*="x.com/"]::after,
-  html body .mobile-menu a[href*="twitter.com/"]::after,
-  html body .mobile-menu a[href*="instagram.com/"]::after,
-  html body .mobile-menu a[href*="facebook.com/"]::after,
-  html body .mobile-menu a[href*="line.me/"]::after,
-  html body .mobile-menu a[href*="lin.ee/"]::after,
-  html body .mobile-menu a[href*="youtube.com/"]::after,
-  html body .mobile-menu a[href*="youtu.be/"]::after {
-    content: "" !important;
-    display: block !important;
-    flex: 0 0 18px !important;
-    width: 18px !important;
-    height: 18px !important;
-    margin-left: auto !important;
-    background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  html body .mobile-menu a[data-ftec-external="true"] .ftec-arrow-slot {
+    width: 18px;
+    height: 18px;
   }
 
-  /* Contact button keeps a dark horizontal arrow. */
-  html body .mobile-menu a[data-ftec-contact="true"]::after {
-    content: "" !important;
-    display: block !important;
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 14px !important;
-    margin-left: auto !important;
-    background: center / 24px 14px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  html body .mobile-menu a[data-ftec-contact="true"] .ftec-arrow-slot {
+    color: var(--deep, #031136);
   }
 
-  /* Goods is a top-level menu item, not a small submenu link. */
   html body .mobile-menu a[data-ftec-goods="true"] {
     min-height: 0 !important;
     margin: 0 !important;
