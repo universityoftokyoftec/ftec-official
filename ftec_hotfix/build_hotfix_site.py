@@ -10,8 +10,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-CSS_TAG = '<link rel="stylesheet" href="/ftec_hotfix/ftec-hotfix.css?v=20260802" data-ftec-patch="css">'
-JS_TAG = '<script src="/ftec_hotfix/ftec-hotfix.js?v=20260802" defer data-ftec-patch="js"></script>'
+CSS_TAG = '<link rel="stylesheet" href="/ftec_hotfix/ftec-hotfix.css?v=20260802-3" data-ftec-patch="css">'
+JS_TAG = '<script src="/ftec_hotfix/ftec-hotfix.js?v=20260802-3" defer data-ftec-patch="js"></script>'
 
 
 def inject(html_path: Path) -> bool:
