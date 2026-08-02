@@ -1,83 +1,80 @@
-/* F-tec lightweight hotfix v14 */
+/* F-tec inline hotfix v15 */
 (() => {
   'use strict';
 
-  const MENU_SELECTOR = '.mobile-menu';
-  const ARROW_CHARS = /[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴➡➤➥➦➧➨➩➪➫➬➭➮➯➱⮕]/gu;
+  const MENU = '.mobile-menu';
+  const ARROWS = /[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴➡➤➥➦➧➨➩➪➫➬➭➮➯➱⮕]/gu;
   const EXTERNAL_HOSTS = [
     'note.com', 'x.com', 'twitter.com', 'instagram.com', 'facebook.com',
     'line.me', 'lin.ee', 'youtube.com', 'youtu.be'
   ];
-  let scheduled = false;
+  let queued = false;
 
-  function isExternalLink(link) {
+  function external(link) {
     if (link.target === '_blank') return true;
-    const raw = link.getAttribute('href') || '';
-    if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:')) return false;
+    const href = link.getAttribute('href') || '';
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return false;
     try {
-      const url = new URL(raw, location.href);
-      if (EXTERNAL_HOSTS.some((host) => url.hostname === host || url.hostname.endsWith(`.${host}`))) return true;
-      return url.origin !== location.origin;
+      const url = new URL(href, location.href);
+      return EXTERNAL_HOSTS.some((host) => url.hostname === host || url.hostname.endsWith('.' + host)) || url.origin !== location.origin;
     } catch (_) {
       return false;
     }
   }
 
-  function removeOldArrows(link) {
-    link.querySelectorAll(
-      'svg, [aria-hidden="true"], [class*="arrow"], [class*="Arrow"], [class*="hotfix"]'
-    ).forEach((node) => {
+  function removeArrowChildren(link) {
+    link.querySelectorAll('svg, [aria-hidden="true"], [class*="arrow" i]').forEach((node) => {
       const text = (node.textContent || '').trim();
-      if (node.tagName.toLowerCase() === 'svg' || !text || ARROW_CHARS.test(text)) node.remove();
-      ARROW_CHARS.lastIndex = 0;
+      if (node.tagName.toLowerCase() === 'svg' || !text || ARROWS.test(text)) node.remove();
+      ARROWS.lastIndex = 0;
     });
 
     const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach((node) => {
-      node.nodeValue = (node.nodeValue || '')
-        .replace(ARROW_CHARS, '')
-        .replace(/[\uFE0E\uFE0F]/gu, '');
-      ARROW_CHARS.lastIndex = 0;
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      node.nodeValue = (node.nodeValue || '').replace(ARROWS, '').replace(/[\uFE0E\uFE0F]/gu, '');
+      ARROWS.lastIndex = 0;
     });
   }
 
-  function fixLink(link) {
+  function fix(link) {
     if (!(link instanceof HTMLAnchorElement)) return;
-    removeOldArrows(link);
-
+    removeArrowChildren(link);
     const label = (link.textContent || '').replace(/\s+/g, ' ').trim();
-    link.dataset.ftecMenuLink = 'true';
-    link.toggleAttribute('data-ftec-external', isExternalLink(link));
-    link.toggleAttribute('data-ftec-goods', label === 'グッズ販売');
-    link.toggleAttribute('data-ftec-contact', label === 'お問い合わせ');
+    link.setAttribute('data-ftec-menu-link', 'true');
+    if (external(link)) link.setAttribute('data-ftec-external', 'true');
+    else link.removeAttribute('data-ftec-external');
+    if (label === 'グッズ販売') link.setAttribute('data-ftec-goods', 'true');
+    else link.removeAttribute('data-ftec-goods');
+    if (label === 'お問い合わせ') link.setAttribute('data-ftec-contact', 'true');
+    else link.removeAttribute('data-ftec-contact');
   }
 
   function apply() {
-    document.querySelectorAll(`${MENU_SELECTOR} a`).forEach(fixLink);
-    document.documentElement.dataset.ftecHotfixVersion = '14';
+    document.querySelectorAll(`${MENU} a`).forEach(fix);
+    document.documentElement.setAttribute('data-ftec-inline-hotfix', '15');
   }
 
   function schedule() {
-    if (scheduled) return;
-    scheduled = true;
+    if (queued) return;
+    queued = true;
     requestAnimationFrame(() => {
-      scheduled = false;
+      queued = false;
       apply();
     });
   }
 
   function start() {
     apply();
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-    [0, 50, 250, 1000, 2500].forEach((delay) => setTimeout(apply, delay));
+    new MutationObserver(schedule).observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+    [0, 50, 250, 1000, 2500].forEach((ms) => setTimeout(apply, ms));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start, { once: true });
-  } else {
-    start();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })();

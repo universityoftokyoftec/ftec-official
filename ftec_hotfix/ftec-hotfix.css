@@ -1,28 +1,24 @@
-/* F-tec lightweight hotfix v14
-   - スマホメニューの矢印は各リンク右端に1個だけ
-   - 内部リンクは右向き、外部サイトは右上向き
-   - 文字矢印は使わず SVG 背景で描画
+/* F-tec inline hotfix v15
+   Mobile menu: one arrow only. Internal links use →, external links use ↗.
 */
-
 @media (max-width: 1100px) {
-  /* 過去パッチや元HTMLの矢印を無効化 */
-  .mobile-menu a::before,
-  .mobile-menu a::after {
+  /* Remove all pre-existing arrow nodes/pseudo-elements before drawing ours. */
+  html body .mobile-menu a::before,
+  html body .mobile-menu a::after {
     content: none !important;
     display: none !important;
     background: none !important;
   }
 
-  .mobile-menu a > span[aria-hidden="true"],
-  .mobile-menu a > i[aria-hidden="true"],
-  .mobile-menu a > b[aria-hidden="true"],
-  .mobile-menu a > svg,
-  .mobile-menu a [class*="arrow"],
-  .mobile-menu a [class*="Arrow"] {
+  html body .mobile-menu a > span[aria-hidden="true"],
+  html body .mobile-menu a > i[aria-hidden="true"],
+  html body .mobile-menu a > b[aria-hidden="true"],
+  html body .mobile-menu a > svg,
+  html body .mobile-menu a [class*="arrow" i] {
     display: none !important;
   }
 
-  .mobile-menu a[data-ftec-menu-link="true"] {
+  html body .mobile-menu a[data-ftec-menu-link="true"] {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -30,21 +26,18 @@
     width: 100% !important;
   }
 
-  /* 既定はサイト内リンク：右向き矢印 */
-  .mobile-menu a[data-ftec-menu-link="true"]::after {
+  /* Internal link: one horizontal arrow at the far right. */
+  html body .mobile-menu a[data-ftec-menu-link="true"]::after {
     content: "" !important;
     display: block !important;
     flex: 0 0 24px !important;
     width: 24px !important;
     height: 14px !important;
     margin-left: auto !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: 24px 14px !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background: center / 24px 14px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
   }
 
-  /* 外部リンク：右上向き矢印。JS属性に加え、URL/targetでも直接判定する。 */
+  /* External link: one diagonal arrow at the far right. */
   html body .mobile-menu a[data-ftec-external="true"]::after,
   html body .mobile-menu a[target="_blank"]::after,
   html body .mobile-menu a[href*="note.com/"]::after,
@@ -62,13 +55,10 @@
     width: 18px !important;
     height: 18px !important;
     margin-left: auto !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: 18px 18px !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background: center / 18px 18px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 14L14 4M7 4h7v7' fill='none' stroke='%232fb8cf' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
   }
 
-  /* お問い合わせボタンは濃紺の右矢印 */
+  /* Contact button keeps a dark horizontal arrow. */
   html body .mobile-menu a[data-ftec-contact="true"]::after {
     content: "" !important;
     display: block !important;
@@ -76,14 +66,11 @@
     width: 24px !important;
     height: 14px !important;
     margin-left: auto !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
-    background-size: 24px 14px !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background: center / 24px 14px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 14'%3E%3Cpath d='M1 7h21M17 2l5 5-5 5' fill='none' stroke='%23031136' stroke-width='1.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
   }
 
-  /* グッズ販売を大項目と同じ見た目に統一 */
-  .mobile-menu a[data-ftec-goods="true"] {
+  /* Goods is a top-level menu item, not a small submenu link. */
+  html body .mobile-menu a[data-ftec-goods="true"] {
     min-height: 0 !important;
     margin: 0 !important;
     padding: 18px 0 !important;
@@ -92,8 +79,8 @@
     border-radius: 0 !important;
     background: transparent !important;
     color: #fff !important;
-    font-family: inherit !important;
-    font-size: clamp(18px, 5vw, 25px) !important;
+    font: inherit !important;
+    font-size: clamp(18px,5vw,25px) !important;
     font-weight: 600 !important;
     line-height: 1.45 !important;
     letter-spacing: .02em !important;
