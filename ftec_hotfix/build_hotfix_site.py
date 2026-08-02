@@ -5,7 +5,7 @@ import re
 import sys
 from pathlib import Path
 
-VERSION = "20260802-13"
+VERSION = "20260802-14"
 
 def relative_asset(html_path: Path, site_root: Path, filename: str) -> str:
     target = site_root / "ftec_hotfix" / filename
@@ -37,7 +37,7 @@ def main() -> int:
         raise SystemExit(f"Site directory not found: {root}")
     files = sorted(root.rglob('*.html'))
     changed = sum(inject(path, root) for path in files)
-    print(f"F-tec hotfix v13: {changed}/{len(files)} HTML files updated.")
+    print(f"F-tec hotfix v14: {changed}/{len(files)} HTML files updated.")
     return 0
 
 if __name__ == '__main__':

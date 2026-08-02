@@ -1,108 +1,69 @@
-/* F-tec lightweight hotfix v13 */
+/* F-tec lightweight hotfix v14 */
 (() => {
   'use strict';
 
-  const VERSION = '12';
-  const MENU = '.mobile-menu';
+  const MENU_SELECTOR = '.mobile-menu';
   const ARROW_CHARS = /[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴➡➤➥➦➧➨➩➪➫➬➭➮➯➱⮕]/gu;
-  const ARROW_ONLY = /^\s*[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴➡➤➥➦➧➨➩➪➫➬➭➮➯➱⮕][\uFE0E\uFE0F]?\s*$/u;
-  const EXTERNAL = /[↗⤴]/u;
-  let queued = false;
+  const EXTERNAL_HOSTS = [
+    'note.com', 'x.com', 'twitter.com', 'instagram.com', 'facebook.com',
+    'line.me', 'lin.ee', 'youtube.com', 'youtu.be'
+  ];
+  let scheduled = false;
 
-  function makeArrow(external) {
-    const host = document.createElement('span');
-    host.className = `ftec-v13-arrow-host ${external ? 'is-external' : 'is-internal'}`;
-    host.setAttribute('aria-hidden', 'true');
-
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', external ? '0 0 18 18' : '0 0 24 14');
-    svg.setAttribute('focusable', 'false');
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', external ? 'M4 14L14 4M7 4H14V11' : 'M1 7H22M17 2L22 7L17 12');
-    svg.appendChild(path);
-    host.appendChild(svg);
-    return host;
+  function isExternalLink(link) {
+    if (link.target === '_blank') return true;
+    const raw = link.getAttribute('href') || '';
+    if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:')) return false;
+    try {
+      const url = new URL(raw, location.href);
+      if (EXTERNAL_HOSTS.some((host) => url.hostname === host || url.hostname.endsWith(`.${host}`))) return true;
+      return url.origin !== location.origin;
+    } catch (_) {
+      return false;
+    }
   }
 
-  function replaceGlobalArrows() {
-    if (!document.body) return;
-
-    /* 矢印だけを内容に持つ要素（span/i/a等）をSVG化。スマホメニューは別処理。 */
-    document.querySelectorAll('span, i, b, em, strong, small, a, button').forEach((el) => {
-      if (!(el instanceof HTMLElement)) return;
-      if (el.closest(MENU)) return;
-      if (el.classList.contains('ftec-v13-arrow-host')) return;
-      if (el.children.length && ![...el.children].every((child) => child.matches('svg, path'))) return;
-      const text = (el.textContent || '').trim();
-      if (!ARROW_ONLY.test(text)) return;
-      el.replaceChildren(makeArrow(EXTERNAL.test(text)));
+  function removeOldArrows(link) {
+    link.querySelectorAll(
+      'svg, [aria-hidden="true"], [class*="arrow"], [class*="Arrow"], [class*="hotfix"]'
+    ).forEach((node) => {
+      const text = (node.textContent || '').trim();
+      if (node.tagName.toLowerCase() === 'svg' || !text || ARROW_CHARS.test(text)) node.remove();
+      ARROW_CHARS.lastIndex = 0;
     });
 
-    /* 裸の矢印テキストノードもSVG化。 */
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach((node) => {
-      const parent = node.parentElement;
-      if (!parent || parent.closest(MENU)) return;
-      if (/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|SVG|PATH)$/i.test(parent.tagName)) return;
-      const text = node.nodeValue || '';
-      if (!ARROW_ONLY.test(text.trim())) return;
-      node.replaceWith(makeArrow(EXTERNAL.test(text)));
+      node.nodeValue = (node.nodeValue || '')
+        .replace(ARROW_CHARS, '')
+        .replace(/[\uFE0E\uFE0F]/gu, '');
+      ARROW_CHARS.lastIndex = 0;
     });
   }
 
-  function cleanMenuLink(link) {
+  function fixLink(link) {
     if (!(link instanceof HTMLAnchorElement)) return;
-
-    /* 過去のSVG・矢印専用要素を削除。 */
-    link.querySelectorAll('svg, .ftec-v13-arrow-host, [class*="hotfix"][class*="arrow"], [class*="menu-arrow"]').forEach((el) => el.remove());
-
-    /* aria-hiddenの矢印文字要素だけ削除。 */
-    link.querySelectorAll('[aria-hidden="true"]').forEach((el) => {
-      const text = (el.textContent || '').trim();
-      if (!text || ARROW_ONLY.test(text)) el.remove();
-    });
-
-    /* リンク内に直接残った矢印文字を消す。 */
-    const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
-    const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    textNodes.forEach((node) => {
-      node.nodeValue = (node.nodeValue || '').replace(ARROW_CHARS, '').replace(/[\uFE0E\uFE0F]/gu, '');
-    });
+    removeOldArrows(link);
 
     const label = (link.textContent || '').replace(/\s+/g, ' ').trim();
-    const href = link.getAttribute('href') || '';
-    let isExternal = link.target === '_blank';
-    if (!isExternal && href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:')) {
-      try { isExternal = new URL(href, location.href).origin !== location.origin; } catch (_) {}
-    }
-
-    [...link.classList].forEach((name) => {
-      if (/^ftec-v(?:5|7|8|9|10|11|12|13)-/.test(name) || /^ftec-hotfix-/.test(name)) link.classList.remove(name);
-    });
-    if (label === 'グッズ販売') link.classList.add('ftec-v13-goods');
-    else if (label === 'お問い合わせ') link.classList.add('ftec-v13-contact');
-    else link.classList.add('ftec-v13-menu-link');
-    link.classList.toggle('ftec-v13-external', isExternal);
-  }
-
-  function fixMenu() {
-    document.querySelectorAll(`${MENU} a`).forEach(cleanMenuLink);
+    link.dataset.ftecMenuLink = 'true';
+    link.toggleAttribute('data-ftec-external', isExternalLink(link));
+    link.toggleAttribute('data-ftec-goods', label === 'グッズ販売');
+    link.toggleAttribute('data-ftec-contact', label === 'お問い合わせ');
   }
 
   function apply() {
-    replaceGlobalArrows();
-    fixMenu();
-    document.documentElement.dataset.ftecHotfixVersion = VERSION;
+    document.querySelectorAll(`${MENU_SELECTOR} a`).forEach(fixLink);
+    document.documentElement.dataset.ftecHotfixVersion = '14';
   }
 
   function schedule() {
-    if (queued) return;
-    queued = true;
+    if (scheduled) return;
+    scheduled = true;
     requestAnimationFrame(() => {
-      queued = false;
+      scheduled = false;
       apply();
     });
   }
@@ -114,6 +75,9 @@
     [0, 50, 250, 1000, 2500].forEach((delay) => setTimeout(apply, delay));
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
-  else start();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start, { once: true });
+  } else {
+    start();
+  }
 })();
