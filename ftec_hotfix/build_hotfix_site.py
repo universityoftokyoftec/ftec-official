@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from urllib.parse import urlparse
 
-VERSION = "20260802-16"
+VERSION = "20260802-17"
 STYLE_ID = "ftec-hotfix-inline"
 SCRIPT_ID = "ftec-hotfix-inline-script"
 ARROW_CHARS = "←→↗➡➜➝➞⟶⟹⇢⇥›»＞﹥⤴➤➥➦➧➨➩➪➫➬➭➮➯➱⮕"
@@ -168,7 +168,7 @@ def main() -> int:
     html_files = sorted(site.rglob('*.html'))
     changed = sum(inject(p, css, js) for p in html_files)
     (site / '.nojekyll').touch()
-    print(f"F-tec inline hotfix v16: {changed}/{len(html_files)} HTML files updated.")
+    print(f"F-tec inline hotfix v17: {changed}/{len(html_files)} HTML files updated.")
     if not html_files or changed == 0:
         raise SystemExit('No HTML files were patched.')
     return 0

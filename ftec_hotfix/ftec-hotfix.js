@@ -1,8 +1,8 @@
-/* F-tec inline hotfix v16 */
+/* F-tec inline hotfix v17 */
 (() => {
   'use strict';
 
-  const VERSION = '16';
+  const VERSION = '17';
   const MENU = '.mobile-menu';
   const ARROW_CHARS = '←→↗➡➜➝➞⟶⟹⇢⇥›»＞﹥⤴➤➥➦➧➨➩➪➫➬➭➮➯➱⮕';
   const ARROW_RE = new RegExp(`[${ARROW_CHARS}\\uFE0E\\uFE0F]`, 'gu');
