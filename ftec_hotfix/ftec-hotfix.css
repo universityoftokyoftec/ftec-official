@@ -1,19 +1,18 @@
-/* F-tec lightweight hotfix v8
-   iPhone/Safariで文字の↗が絵文字化する問題を、文字ではなくSVGへ置換して解消。
-   スマホメニューの矢印重複と「グッズ販売」の行崩れも同時に補正。
+/* F-tec lightweight hotfix v9
+   Mobile navigation: one arrow per link, at the far right only.
 */
 
-/* HTML内の矢印文字を置き換えたSVG */
-.ftec-hotfix-inline-arrow-v8,
-.ftec-hotfix-arrow-host-v8 > svg {
+/* Page-wide SVG arrows used by the existing hotfix pipeline */
+.ftec-hotfix-inline-arrow-v9,
+.ftec-hotfix-arrow-host-v9 > svg {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
   overflow: visible !important;
 }
 
-.ftec-hotfix-inline-arrow-v8 path,
-.ftec-hotfix-arrow-host-v8 > svg path {
+.ftec-hotfix-inline-arrow-v9 path,
+.ftec-hotfix-arrow-host-v9 > svg path {
   fill: none !important;
   stroke: currentColor !important;
   stroke-width: 1.25 !important;
@@ -21,8 +20,7 @@
   stroke-linejoin: round !important;
 }
 
-/* 元のspan/i/bなどの箱は残し、中身だけSVG化する */
-.ftec-hotfix-arrow-host-v8 {
+.ftec-hotfix-arrow-host-v9 {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -35,29 +33,20 @@
   vertical-align: middle !important;
 }
 
-.ftec-hotfix-arrow-host-v8.is-external {
+.ftec-hotfix-arrow-host-v9.is-external,
+.ftec-hotfix-inline-arrow-v9.is-external {
   width: 18px !important;
   height: 18px !important;
 }
 
-.ftec-hotfix-arrow-host-v8.is-internal {
-  width: 24px !important;
-  height: 14px !important;
-}
-
-/* ビルド時に直接差し込んだSVGにも寸法を付ける */
-.ftec-hotfix-inline-arrow-v8.is-external {
-  width: 18px !important;
-  height: 18px !important;
-}
-
-.ftec-hotfix-inline-arrow-v8.is-internal {
+.ftec-hotfix-arrow-host-v9.is-internal,
+.ftec-hotfix-inline-arrow-v9.is-internal {
   width: 24px !important;
   height: 14px !important;
 }
 
 @media (max-width: 1100px) {
-  /* 古いCSSが生成するスマホメニューの疑似要素矢印を停止 */
+  /* Kill every arrow source that predates v9. */
   .mobile-menu a::before,
   .mobile-menu a::after {
     content: none !important;
@@ -65,10 +54,36 @@
     background: none !important;
   }
 
-  /* スマホメニュー内はJSが入れる矢印だけ表示 */
-  .mobile-menu .ftec-hotfix-menu-arrow-v8 {
+  .mobile-menu a > span[aria-hidden="true"],
+  .mobile-menu a > i[aria-hidden="true"],
+  .mobile-menu a > b[aria-hidden="true"],
+  .mobile-menu a .ftec-hotfix-arrow-host-v5,
+  .mobile-menu a .ftec-hotfix-arrow-host-v7,
+  .mobile-menu a .ftec-hotfix-arrow-host-v8,
+  .mobile-menu a .ftec-hotfix-inline-arrow-v5,
+  .mobile-menu a .ftec-hotfix-inline-arrow-v7,
+  .mobile-menu a .ftec-hotfix-inline-arrow-v8,
+  .mobile-menu a .ftec-hotfix-menu-arrow-v5,
+  .mobile-menu a .ftec-hotfix-menu-arrow-v7,
+  .mobile-menu a .ftec-hotfix-menu-arrow-v8,
+  .mobile-menu a svg:not(.ftec-hotfix-menu-arrow-v9) {
+    display: none !important;
+  }
+
+  /* Every menu link is one row with one arrow at the far right. */
+  .mobile-menu a.ftec-hotfix-sub-link-v9,
+  .mobile-menu a.ftec-hotfix-contact-v9,
+  .mobile-menu a.ftec-hotfix-top-link-v9 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    width: 100% !important;
+  }
+
+  .mobile-menu .ftec-hotfix-menu-arrow-v9 {
     display: block !important;
-    flex: 0 0 auto !important;
+    flex: 0 0 24px !important;
     width: 24px !important;
     height: 14px !important;
     margin-left: auto !important;
@@ -76,12 +91,7 @@
     overflow: visible !important;
   }
 
-  .mobile-menu .ftec-hotfix-menu-arrow-v8.is-external {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  .mobile-menu .ftec-hotfix-menu-arrow-v8 path {
+  .mobile-menu .ftec-hotfix-menu-arrow-v9 path {
     fill: none !important;
     stroke: currentColor !important;
     stroke-width: 1.25 !important;
@@ -89,18 +99,13 @@
     stroke-linejoin: round !important;
   }
 
-  /* グッズ販売を、ほかの大項目と同じ行へ */
-  .mobile-menu a.ftec-hotfix-top-link-v8 {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 20px !important;
-    width: 100% !important;
+  /* Goods is a top-level row, matching the accordion headings. */
+  .mobile-menu a.ftec-hotfix-top-link-v9 {
     min-height: 0 !important;
     margin: 0 !important;
     padding: 18px 0 !important;
     border: 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+    border-bottom: 1px solid rgba(255,255,255,.18) !important;
     border-radius: 0 !important;
     background: transparent !important;
     color: #fff !important;
@@ -108,16 +113,7 @@
     font-size: clamp(18px, 5vw, 25px) !important;
     font-weight: 600 !important;
     line-height: 1.45 !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: .02em !important;
     text-decoration: none !important;
-  }
-
-  .mobile-menu a.ftec-hotfix-sub-link-v8,
-  .mobile-menu a.ftec-hotfix-contact-v8 {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 20px !important;
-    width: 100% !important;
   }
 }

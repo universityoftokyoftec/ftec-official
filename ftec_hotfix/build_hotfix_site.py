@@ -6,19 +6,17 @@ import re
 import sys
 from pathlib import Path
 
-VERSION = "20260802-8"
+VERSION = "20260802-9"
 
 EXTERNAL_SVG = (
-    '<svg class="ftec-hotfix-inline-arrow-v8 is-external" viewBox="0 0 18 18" '
+    '<svg class="ftec-hotfix-inline-arrow-v9 is-external" viewBox="0 0 18 18" '
     'aria-hidden="true" focusable="false"><path d="M4 14L14 4M7 4H14V11"/></svg>'
 )
 INTERNAL_SVG = (
-    '<svg class="ftec-hotfix-inline-arrow-v8 is-internal" viewBox="0 0 24 14" '
+    '<svg class="ftec-hotfix-inline-arrow-v9 is-internal" viewBox="0 0 24 14" '
     'aria-hidden="true" focusable="false"><path d="M1 7H22M17 2L22 7L17 12"/></svg>'
 )
 
-# 「矢印だけが入ったspan/i/b等」を、配信前にSVGへ変換する。
-# これによりJS実行前でもiPhoneの絵文字矢印が一瞬表示されない。
 ARROW_ELEMENT_RE = re.compile(
     r'<(?P<tag>span|i|b|em|strong|small)(?P<attrs>[^>]*)>'
     r'\s*(?P<arrow>[→↗➜➝➞⟶⟹⇢⇥›»＞﹥⤴])[\uFE0E\uFE0F]?\s*'
@@ -59,7 +57,6 @@ def inject(path: Path, site_root: Path) -> bool:
     css_tag = f'<link rel="stylesheet" href="{css}?v={VERSION}" data-ftec-patch="css">'
     js_tag = f'<script src="{js}?v={VERSION}" defer data-ftec-patch="js"></script>'
 
-    # 旧版タグがあれば必ずv8へ更新する。
     text = re.sub(r'<link[^>]+data-ftec-patch="css"[^>]*>', css_tag, text)
     text = re.sub(r'<script[^>]+data-ftec-patch="js"[^>]*></script>', js_tag, text)
 
@@ -81,7 +78,7 @@ def main() -> int:
 
     files = sorted(root.rglob("*.html"))
     changed = sum(inject(path, root) for path in files)
-    print(f"F-tec hotfix v8: {changed}/{len(files)} HTML files updated.")
+    print(f"F-tec hotfix v9: {changed}/{len(files)} HTML files updated.")
     return 0
 
 
