@@ -472,7 +472,7 @@ body.ftec-menu-open { overflow: hidden; }
       <div class="goods-product__price">
         <span>PRICE</span>
         <b>¥1,500</b>
-        <small>1個</small>
+        <small>1個／税・送料込み</small>
       </div>
 
       <p class="goods-product__description">
@@ -488,7 +488,7 @@ body.ftec-menu-open { overflow: hidden; }
         </div>
         <div>
           <dt>価格</dt>
-          <dd>1個 1,500円</dd>
+          <dd>1個 1,500円（税・送料込み）</dd>
         </div>
         <div>
           <dt>デザイン</dt>
@@ -636,7 +636,7 @@ body.ftec-menu-open { overflow: hidden; }
       <div class="goods-shirt__price">
         <span>PRICE</span>
         <b>¥4,000</b>
-        <small>1枚</small>
+        <small>1枚／税・送料込み</small>
       </div>
 
       <p class="goods-shirt__description">
@@ -1988,6 +1988,70 @@ body.ftec-menu-open { overflow: hidden; }
   preloadImages();
   render(0, false);
   startAutoPlay();
+})();
+</script>
+
+<script>
+(() => {
+  const clearFileMessage = [
+    '購入希望の商品：たんせい零號クリアファイル',
+    '',
+    '数量：',
+    '',
+    '受け取り・発送についての希望：',
+    '',
+    'その他、ご質問など：'
+  ].join('\n');
+
+  const setupClearFileInquiry = () => {
+    const button = document.querySelector(
+      'a[href*="category=goods"][href*="product=clear-file"]'
+    );
+    if (!button) return;
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      const contactWindow = window.open(button.href, '_blank');
+      if (!contactWindow) {
+        window.location.href = button.href;
+        return;
+      }
+
+      const startedAt = Date.now();
+      const timer = window.setInterval(() => {
+        if (contactWindow.closed || Date.now() - startedAt > 10000) {
+          window.clearInterval(timer);
+          return;
+        }
+
+        try {
+          const fields = Array.from(
+            contactWindow.document.querySelectorAll('textarea, input[type="text"]')
+          );
+          const messageField = fields.find((field) =>
+            (field.value || '').includes('購入希望の商品')
+          );
+
+          if (!messageField) return;
+
+          messageField.value = clearFileMessage;
+          messageField.dispatchEvent(new Event('input', { bubbles: true }));
+          messageField.dispatchEvent(new Event('change', { bubbles: true }));
+          messageField.focus();
+          window.clearInterval(timer);
+        } catch (error) {
+          // 読み込み完了まで待機します。
+        }
+      }, 200);
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupClearFileInquiry);
+  } else {
+    setupClearFileInquiry();
+  }
 })();
 </script>
 </body>
