@@ -317,77 +317,6 @@ body.ftec-menu-open { overflow: hidden; }
     });
   });
 
-  // ホームの写真カルーセルを復元
-document.querySelectorAll('.field-notes__carousel').forEach((carousel) => {
-  const slides = [...carousel.querySelectorAll('.field-notes__slides img')];
-  if (slides.length < 2) return;
-
-  const prev = carousel.querySelector('[aria-label="前の写真"]');
-  const next = carousel.querySelector('[aria-label="次の写真"]');
-  const counter = carousel.querySelector('.field-notes__controls span');
-
-  let index = Math.max(
-    0,
-    slides.findIndex((img) => img.classList.contains('is-active'))
-  );
-
-  let timer = null;
-  const interval = 5000;
-
-  const show = (n) => {
-    index = (n + slides.length) % slides.length;
-
-    slides.forEach((img, i) => {
-      const active = i === index;
-      img.classList.toggle('is-active', active);
-      img.setAttribute('aria-hidden', active ? 'false' : 'true');
-    });
-
-    if (counter) {
-      counter.textContent = `${index + 1} / ${slides.length}`;
-    }
-  };
-
-  const stopAutoPlay = () => {
-    if (timer !== null) {
-      clearInterval(timer);
-      timer = null;
-    }
-  };
-
-  const startAutoPlay = () => {
-    stopAutoPlay();
-
-    timer = setInterval(() => {
-      show(index + 1);
-    }, interval);
-  };
-
-  prev?.addEventListener('click', () => {
-    show(index - 1);
-    startAutoPlay();
-  });
-
-  next?.addEventListener('click', () => {
-    show(index + 1);
-    startAutoPlay();
-  });
-
-  carousel.addEventListener('mouseenter', stopAutoPlay);
-  carousel.addEventListener('mouseleave', startAutoPlay);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stopAutoPlay();
-    } else {
-      startAutoPlay();
-    }
-  });
-
-  show(index);
-  startAutoPlay();
-});
-
   // 問い合わせフォーム：専用サーバーなしでもメールアプリから送れるようにする
   const form = document.querySelector('.contact-form');
   if (form) {
@@ -430,6 +359,96 @@ document.querySelectorAll('.field-notes__carousel').forEach((carousel) => {
       if (!ok) return;
       location.href = `mailto:university.of.tokyo.ftec@gmail.com?subject=${encodeURIComponent(`[Webお問い合わせ] ${subject}`)}&body=${encodeURIComponent(body)}`;
     });
+  }
+})();
+</script>
+
+<script id="ftec-carousel-runtime">
+(() => {
+  'use strict';
+
+  const AUTOPLAY_MS = 5000;
+
+  const initialiseCarousel = (carousel) => {
+    if (carousel.dataset.carouselReady === 'true') return;
+
+    const slides = Array.from(
+      carousel.querySelectorAll('.field-notes__slides img')
+    );
+    if (slides.length === 0) return;
+
+    const previousButton = carousel.querySelector('[aria-label="前の写真"]');
+    const nextButton = carousel.querySelector('[aria-label="次の写真"]');
+    const counter = carousel.querySelector('.field-notes__controls span');
+
+    let currentIndex = 0;
+    let autoplayTimer = null;
+
+    const showSlide = (requestedIndex) => {
+      currentIndex = (requestedIndex + slides.length) % slides.length;
+
+      slides.forEach((slide, index) => {
+        const isCurrent = index === currentIndex;
+        slide.classList.toggle('is-active', isCurrent);
+        slide.setAttribute('aria-hidden', String(!isCurrent));
+      });
+
+      if (counter) {
+        counter.textContent = `${currentIndex + 1} / ${slides.length}`;
+      }
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer !== null) {
+        window.clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      if (slides.length < 2 || document.hidden) return;
+
+      autoplayTimer = window.setInterval(() => {
+        showSlide(currentIndex + 1);
+      }, AUTOPLAY_MS);
+    };
+
+    const moveSlide = (direction) => {
+      showSlide(currentIndex + direction);
+      startAutoplay();
+    };
+
+    previousButton?.addEventListener('click', () => moveSlide(-1));
+    nextButton?.addEventListener('click', () => moveSlide(1));
+
+    // マウスを写真の上に置いても自動再生を止めない。
+    // タブが非表示の間だけ停止し、戻ったら再開する。
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoplay();
+      } else {
+        startAutoplay();
+      }
+    });
+
+    carousel.dataset.carouselReady = 'true';
+    showSlide(0);
+    startAutoplay();
+  };
+
+  const initialiseAllCarousels = () => {
+    document
+      .querySelectorAll('.field-notes__carousel')
+      .forEach(initialiseCarousel);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialiseAllCarousels, {
+      once: true,
+    });
+  } else {
+    initialiseAllCarousels();
   }
 })();
 </script>
