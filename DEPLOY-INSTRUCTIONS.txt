@@ -1,0 +1,28 @@
+F-tec公式サイト SEO修正版
+
+配置するもの
+------------
+index.html
+sitemap.xml
+robots.txt
+assets/seo-media/ 以下の画像一式
+
+GitHubリポジトリ universityoftokyoftec/ftec-official のルートへ、
+このフォルダ構成を崩さず上書き・追加してください。
+
+配置後
+------
+1. GitHub Pagesへの反映を確認
+2. /sitemap.xml と /robots.txt が表示されることを確認
+3. Search Consoleの「サイトマップ」で sitemap.xml を送信
+4. URL検査でトップページを「公開URLをテスト」
+5. 登録可能と表示されたら「インデックス登録をリクエスト」
+
+主な修正
+--------
+- Base64埋め込み画像を外部ファイル化
+- 重複画像を共通ファイル化
+- SEOタグをbodyから正しいhead内へ移動
+- canonical、description、robots、OGP、JSON-LDを整理
+- SingleFile保存情報とブラウザ拡張機能由来CSSを削除
+- sitemap.xmlとrobots.txtを追加
