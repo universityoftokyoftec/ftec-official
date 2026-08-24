@@ -1,34 +1,34 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-08-24T03:36:38+00:00",
+  "updated_at": "2026-08-24T04:20:51+00:00",
   "posts": [
     {
-      "title": "7月週間報告④",
-      "url": "https://note.com/utokyo_ftec/n/nc749002f48b9",
+      "title": "８月週間報告③",
+      "url": "https://note.com/utokyo_ftec/n/n7ecabf77ca38",
+      "date_iso": "2026-08-24",
+      "date_display": "2026.08.24",
+      "excerpt": "こんにちは、F-tecです！ ようやくnote投稿も追いついてきました（本当にごめんなさい/今度から毎週定期的に書いていきます） 一年生にも少しずつ書いてもらおうかなって最近考えていますｗ ってことで、今週の活動報告です！",
+      "image": "../assets/note-images/n7ecabf77ca38.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/306405287/rectangle_large_type_2_6514f45b8fe8201598c5bed08fd53a1d.png?fit=bounds&quality=85&width=1280"
+    },
+    {
+      "title": "8月週間報告②",
+      "url": "https://note.com/utokyo_ftec/n/n85ff1a37c818",
       "date_iso": "2026-08-24",
       "date_display": "2026.08.24",
       "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
-      "image": "../assets/note-images/nc749002f48b9.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/306391761/rectangle_large_type_2_8e95acde11b01d201f55ad1420cc3663.png?fit=bounds&quality=85&width=1280"
+      "image": "../assets/note-images/n85ff1a37c818.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/306402858/rectangle_large_type_2_f69b0a8352ca1d5ec002d0b9bb629bdd.png?fit=bounds&quality=85&width=1280"
     },
     {
-      "title": "７月週間報告③",
-      "url": "https://note.com/utokyo_ftec/n/nf81eb3f77d47",
+      "title": "8月週間報告①",
+      "url": "https://note.com/utokyo_ftec/n/n297c89658529",
       "date_iso": "2026-08-24",
       "date_display": "2026.08.24",
       "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
-      "image": "../assets/note-images/nf81eb3f77d47.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/306386084/rectangle_large_type_2_4e4daae8f7e99b46cc82f08badee52fa.jpeg?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "７月週間報告②",
-      "url": "https://note.com/utokyo_ftec/n/nd9c45aabcd34",
-      "date_iso": "2026-07-14",
-      "date_display": "2026.07.14",
-      "excerpt": "こんにちは、F-tecです！ ↑のセリフ数週間ぶりに書いたかもしれません💦 なんやかんや、書き始めて半年たちましたね（唐突） 私（面梟）はいつまで書くことやら… ってことで今回の活動報告です。",
-      "image": "../assets/note-images/nd9c45aabcd34.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/294038402/rectangle_large_type_2_f37137613d0e634bf55c668d550c6989.png?fit=bounds&quality=85&width=1280"
+      "image": "../assets/note-images/n297c89658529.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/306502811/rectangle_large_type_2_fddd936d092ec68a73a09bb9285d8848.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
