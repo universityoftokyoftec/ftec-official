@@ -1,8 +1,26 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-08-23T21:54:16+00:00",
+  "updated_at": "2026-08-24T03:36:38+00:00",
   "posts": [
+    {
+      "title": "7月週間報告④",
+      "url": "https://note.com/utokyo_ftec/n/nc749002f48b9",
+      "date_iso": "2026-08-24",
+      "date_display": "2026.08.24",
+      "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
+      "image": "../assets/note-images/nc749002f48b9.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/306391761/rectangle_large_type_2_8e95acde11b01d201f55ad1420cc3663.png?fit=bounds&quality=85&width=1280"
+    },
+    {
+      "title": "７月週間報告③",
+      "url": "https://note.com/utokyo_ftec/n/nf81eb3f77d47",
+      "date_iso": "2026-08-24",
+      "date_display": "2026.08.24",
+      "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
+      "image": "../assets/note-images/nf81eb3f77d47.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/306386084/rectangle_large_type_2_4e4daae8f7e99b46cc82f08badee52fa.jpeg?fit=bounds&quality=85&width=1280"
+    },
     {
       "title": "７月週間報告②",
       "url": "https://note.com/utokyo_ftec/n/nd9c45aabcd34",
@@ -11,24 +29,6 @@
       "excerpt": "こんにちは、F-tecです！ ↑のセリフ数週間ぶりに書いたかもしれません💦 なんやかんや、書き始めて半年たちましたね（唐突） 私（面梟）はいつまで書くことやら… ってことで今回の活動報告です。",
       "image": "../assets/note-images/nd9c45aabcd34.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/294038402/rectangle_large_type_2_f37137613d0e634bf55c668d550c6989.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "７月週間報告①",
-      "url": "https://note.com/utokyo_ftec/n/n3ae61394c328",
-      "date_iso": "2026-07-11",
-      "date_display": "2026.07.11",
-      "excerpt": "最近どんな発見がありましたか？ ってnoteの書き出しに書いてあったので、回答しようと思います。 個人的ですが、ドイツにも人力飛行機のチームが存在していた、という事実をここ３日前ぐらいに知りまして、めちゃ驚いています💦（無知がばれる笑） ってことで今回の活動報告です。",
-      "image": "../assets/note-images/n3ae61394c328.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/293387111/rectangle_large_type_2_1420d8a1c69e33b8d0522e4b23c1ab31.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "６月週間報告④",
-      "url": "https://note.com/utokyo_ftec/n/nc2d930be4a58",
-      "date_iso": "2026-07-03",
-      "date_display": "2026.07.03",
-      "excerpt": "買ってよかったものはありますか？ って白紙のnoteに書かれていたので、回答しようと思います。 セブンで販売されている麻辣ピーナッツです（） 一時期全体設計を中心に愛用しています（お腹を壊すそうですが、、、） ってことで、今週の活動報告です！ ①翼、駆動修復",
-      "image": "../assets/note-images/nc2d930be4a58.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/291044941/rectangle_large_type_2_a762f3c7b4d534c63fbb94efbf31c0c6.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
