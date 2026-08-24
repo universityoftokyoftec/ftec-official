@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: update-latest-note
@@ -16,6 +18,9 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    outputs:
+      deploy: ${{ steps.decision.outputs.deploy }}
 
     steps:
       - name: Check out repository
@@ -35,8 +40,10 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
+
           p = Path("assets/note-latest.json")
           data = json.loads(p.read_text(encoding="utf-8"))
+
           for item in data.get("posts", []):
               print(item.get("title"))
               print("  image:", item.get("image"))
@@ -44,15 +51,79 @@ jobs:
           PY
 
       - name: Commit updated data and images when changed
+        id: commit
         shell: bash
         run: |
           if [ -z "$(git status --porcelain -- assets/note-latest.json assets/note-images)" ]; then
             echo "No note update detected."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add assets/note-latest.json assets/note-images
           git commit -m "Update latest note posts and images"
           git push
+
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Decide whether Pages should be deployed
+        id: decision
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Configure Pages
+        if: steps.decision.outputs.deploy == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Build site
+        if: steps.decision.outputs.deploy == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf _site
+          mkdir -p _site
+
+          rsync -a ./ _site/ \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '_site/' \
+            --exclude '*.zip'
+
+          python3 ftec_hotfix/build_hotfix_site.py _site
+
+          mkdir -p _site/ftec_hotfix
+          cp ftec_hotfix/ftec-hotfix.css _site/ftec_hotfix/ftec-hotfix.css
+          cp ftec_hotfix/ftec-hotfix.js _site/ftec_hotfix/ftec-hotfix.js
+
+          test -f _site/.nojekyll
+          test -f _site/ftec_hotfix/ftec-hotfix.css
+          test -f _site/ftec_hotfix/ftec-hotfix.js
+
+      - name: Upload Pages artifact
+        if: steps.decision.outputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    if: needs.update.outputs.deploy == 'true'
+    needs: update
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
