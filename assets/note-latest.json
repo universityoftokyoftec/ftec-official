@@ -1,8 +1,17 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-09-07T12:28:08+00:00",
+  "updated_at": "2026-09-07T17:20:48+00:00",
   "posts": [
+    {
+      "title": "８月週間報告④",
+      "url": "https://note.com/utokyo_ftec/n/ne6da452234eb",
+      "date_iso": "2026-09-08",
+      "date_display": "2026.09.08",
+      "excerpt": "こんにちは、F-tecです！ 最近私はペラ設計をしていますが、設計の楽しさがわかってきました （もっと早く気づけばよかった…） ってことで、今週の活動報告です！ 今週に取り組んだモノ",
+      "image": "../assets/note-images/ne6da452234eb.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/311396064/rectangle_large_type_2_9b2d51cdf46e92a614f289748b686cbb.png?fit=bounds&quality=85&width=1280"
+    },
     {
       "title": "８月週間報告③",
       "url": "https://note.com/utokyo_ftec/n/n7ecabf77ca38",
@@ -20,15 +29,6 @@
       "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
       "image": "../assets/note-images/n85ff1a37c818.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/306402858/rectangle_large_type_2_f69b0a8352ca1d5ec002d0b9bb629bdd.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "8月週間報告①",
-      "url": "https://note.com/utokyo_ftec/n/n297c89658529",
-      "date_iso": "2026-08-24",
-      "date_display": "2026.08.24",
-      "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
-      "image": "../assets/note-images/n297c89658529.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/306502811/rectangle_large_type_2_fddd936d092ec68a73a09bb9285d8848.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
