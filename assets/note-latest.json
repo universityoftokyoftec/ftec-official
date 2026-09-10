@@ -1,8 +1,17 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-09-10T11:16:17+00:00",
+  "updated_at": "2026-09-10T14:10:06+00:00",
   "posts": [
+    {
+      "title": "９月週間報告①",
+      "url": "https://note.com/utokyo_ftec/n/n9ea5546aad14",
+      "date_iso": "2026-09-10",
+      "date_display": "2026.09.10",
+      "excerpt": "こんにちは、F-tecです！ 昨年11月の活動報告で、「お財布事情が寒くなってきた」という話を書きました。（これが金銭面に関する発言第一号だと思われる） あれから約10か月。無事に夏を越し、琵琶湖にも行ってきたわけですが、お財布事情は相変わらずです。どうやら人力飛行機は、一度作ればそれで終わり、とい…",
+      "image": "../assets/note-images/n9ea5546aad14.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/312262636/rectangle_large_type_2_14a38f50b3a4af1c7fec6448eca35815.png?fit=bounds&quality=85&width=1280"
+    },
     {
       "title": "８月週間報告④",
       "url": "https://note.com/utokyo_ftec/n/ne6da452234eb",
@@ -20,15 +29,6 @@
       "excerpt": "こんにちは、F-tecです！ ようやくnote投稿も追いついてきました（本当にごめんなさい/今度から毎週定期的に書いていきます） 一年生にも少しずつ書いてもらおうかなって最近考えていますｗ ってことで、今週の活動報告です！",
       "image": "../assets/note-images/n7ecabf77ca38.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/306405287/rectangle_large_type_2_6514f45b8fe8201598c5bed08fd53a1d.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "8月週間報告②",
-      "url": "https://note.com/utokyo_ftec/n/n85ff1a37c818",
-      "date_iso": "2026-08-24",
-      "date_display": "2026.08.24",
-      "excerpt": "いつも東京大学F-tecを応援していただき、ありがとうございます。 この数週間、noteでの活動報告の更新が滞ってしまっていました。 鳥人間コンテスト本番に向けた機体製作や試験、本番後の片付けや代替わりなどが続く中、目の前の活動を優先するあまり、日頃から応援してくださっている皆さまへの活動報告を十分…",
-      "image": "../assets/note-images/n85ff1a37c818.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/306402858/rectangle_large_type_2_f69b0a8352ca1d5ec002d0b9bb629bdd.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
