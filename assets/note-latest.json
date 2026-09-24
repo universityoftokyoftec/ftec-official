@@ -1,14 +1,14 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-09-24T04:52:41+00:00",
+  "updated_at": "2026-09-24T04:54:28+00:00",
   "posts": [
     {
       "title": "9月週間活動報告③",
       "url": "https://note.com/utokyo_ftec/n/na18eb52c5f18",
       "date_iso": "2026-09-24",
       "date_display": "2026.09.24",
-      "excerpt": "",
+      "excerpt": "こんにちは、F-tecです！ 私達は秋交流会にあわせて関西へ行ってきました。 大阪工業大学様、大阪大学様、大阪公立大学様、京都大学様と、4大学を回るなかなかに濃い遠征でした。 ちなみに、せっかく大阪まで行ったのに、みんなで食べたものはうどんとラーメンでした。 大阪名物どこいったぁ。 ってことで、今週…",
       "image": "../assets/note-images/na18eb52c5f18.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/316985573/rectangle_large_type_2_a08b5c53468aed393a0750a1fed9dd24.png?fit=bounds&quality=85&width=1280"
     },
