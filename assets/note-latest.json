@@ -1,8 +1,17 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-09-24T04:46:29+00:00",
+  "updated_at": "2026-09-24T04:52:41+00:00",
   "posts": [
+    {
+      "title": "9月週間活動報告③",
+      "url": "https://note.com/utokyo_ftec/n/na18eb52c5f18",
+      "date_iso": "2026-09-24",
+      "date_display": "2026.09.24",
+      "excerpt": "",
+      "image": "../assets/note-images/na18eb52c5f18.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/316985573/rectangle_large_type_2_a08b5c53468aed393a0750a1fed9dd24.png?fit=bounds&quality=85&width=1280"
+    },
     {
       "title": "９月週間報告②",
       "url": "https://note.com/utokyo_ftec/n/n126e179b9f62",
@@ -20,15 +29,6 @@
       "excerpt": "こんにちは、F-tecです！ 昨年11月の活動報告で、「お財布事情が寒くなってきた」という話を書きました。（これが金銭面に関する発言第一号だと思われる） あれから約10か月。無事に夏を越し、琵琶湖にも行ってきたわけですが、お財布事情は相変わらずです。どうやら人力飛行機は、一度作ればそれで終わり、とい…",
       "image": "../assets/note-images/n9ea5546aad14.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/312262636/rectangle_large_type_2_14a38f50b3a4af1c7fec6448eca35815.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "８月週間報告④",
-      "url": "https://note.com/utokyo_ftec/n/ne6da452234eb",
-      "date_iso": "2026-09-08",
-      "date_display": "2026.09.08",
-      "excerpt": "こんにちは、F-tecです！ 最近私はペラ設計をしていますが、設計の楽しさがわかってきました （もっと早く気づけばよかった…） ってことで、今週の活動報告です！ 今週に取り組んだモノ",
-      "image": "../assets/note-images/ne6da452234eb.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/311396064/rectangle_large_type_2_9b2d51cdf46e92a614f289748b686cbb.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
