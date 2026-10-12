@@ -1,8 +1,17 @@
 {
   "source": "https://note.com/api/v2/creators/utokyo_ftec/contents?kind=note&page=1",
   "rss_fallback": "https://note.com/utokyo_ftec/rss",
-  "updated_at": "2026-10-12T00:31:03+00:00",
+  "updated_at": "2026-10-12T10:44:32+00:00",
   "posts": [
+    {
+      "title": "10月週間活動報告①",
+      "url": "https://note.com/utokyo_ftec/n/n8f91cdd31e07",
+      "date_iso": "2026-10-12",
+      "date_display": "2026.10.12",
+      "excerpt": "こんにちは、F-tecです！ 気づけば10月。大学の授業が始まり、夏休みのようにずっと作業場にいるわけにもいかなくなりました。とはいえ、来年の鳥人間コンテストに向けて、やるべきことは待ってくれません。授業と製作、なんとか両立していきたいところです……。 ということで、今週の活動報告です！！ 今週取り…",
+      "image": "../assets/note-images/n8f91cdd31e07.webp",
+      "source_image": "https://assets.st-note.com/production/uploads/images/323445726/rectangle_large_type_2_ff22c6f5a5861c98d56bb85b06f3bc8a.png?fit=bounds&quality=85&width=1280"
+    },
     {
       "title": "9月週間活動報告④",
       "url": "https://note.com/utokyo_ftec/n/n1b0536f1ab7f",
@@ -20,15 +29,6 @@
       "excerpt": "こんにちは、F-tecです！ 私達は秋交流会にあわせて関西へ行ってきました。 大阪工業大学様、大阪大学様、大阪公立大学様、京都大学様と、4大学を回るなかなかに濃い遠征でした。 ちなみに、せっかく大阪まで行ったのに、みんなで食べたものはうどんとラーメンでした。 大阪名物どこいったぁ。 ってことで、今週…",
       "image": "../assets/note-images/na18eb52c5f18.webp",
       "source_image": "https://assets.st-note.com/production/uploads/images/316985573/rectangle_large_type_2_a08b5c53468aed393a0750a1fed9dd24.png?fit=bounds&quality=85&width=1280"
-    },
-    {
-      "title": "９月週間報告②",
-      "url": "https://note.com/utokyo_ftec/n/n126e179b9f62",
-      "date_iso": "2026-09-13",
-      "date_display": "2026.09.13",
-      "excerpt": "こんにちは、F-tecです！ 最近は秋交流会に向けて、せっせと交流会資料を作っていました。今回完成したのが「2026年秋交流会 東京大学F-tec」です。全26ページで、***************************（秘密♡）という構成になっています。（今週の活動報告は交流会資料作成について…",
-      "image": "../assets/note-images/n126e179b9f62.webp",
-      "source_image": "https://assets.st-note.com/production/uploads/images/313381139/rectangle_large_type_2_926a35e6bcf3797ecacba193848eda6a.png?fit=bounds&quality=85&width=1280"
     }
   ]
 }
